@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Sistema de Gerenciamento de Reservas</title>
-  <style>
-    body { font-family: Arial, sans-serif; line-height: 1.6; margin: 2em; }
-    h1, h2, h3 { color: #2c3e50; }
-    code { background: #f4f4f4; padding: 2px 4px; border-radius: 4px; }
-    pre { background: #f4f4f4; padding: 1em; border-radius: 6px; overflow-x: auto; }
-    ul { margin-left: 1em; }
-  </style>
-</head>
-<body>
-
-  <h1>Sistema de Gerenciamento de Reservas</h1>
+<h1>Sistema de Gerenciamento de Reservas</h1>
   <p>Este é um sistema desktop simples, desenvolvido em Java, para gerenciar reservas de espaços. Ele possui dois fluxos principais de acesso: <strong>usuário comum</strong> e <strong>administrador</strong>, cada um com suas próprias funcionalidades.</p>
 
   <h2>Tecnologias</h2>
