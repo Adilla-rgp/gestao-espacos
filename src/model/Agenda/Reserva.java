@@ -1,16 +1,19 @@
-package model.agenda;
+package model.Agenda;
+package model.locais.*;
 
 public class Reserva {
     private String nome;
     private String descricao;
     private Horario horario;
+    private Local local;
 
     //metodos construtores
 
-    public Reserva(String nome, String descricao, Horario horario){
+    public Reserva(String nome, String descricao, Horario horario,  Local local){
         this.nome = nome;
         this.descricao = descricao;
         this.horario = horario;
+        this.local = local;
     }
 
     public Reserva(String nome, Horario horario){
@@ -39,6 +42,10 @@ public class Reserva {
         return horario.getFim().toString();
     }
 
+    public String getEspaco() {
+        return local.getNome();
+    }
+
     //setters
 
     public void setNome(String nome){
@@ -51,6 +58,10 @@ public class Reserva {
 
     public void setHorario(Horario horario){
         this.horario = horario;
+    }
+
+    public void setLocal(Local local) {
+        this.local = local;
     }
 
     // Verifica se esta reserva conflita com outra

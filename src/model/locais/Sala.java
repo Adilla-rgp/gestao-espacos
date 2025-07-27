@@ -2,15 +2,15 @@ package model.locais;
 
 public class Sala extends Local {
     private int quantProjetor;
-    private int quantArCondionado;
+    private int quantArCondicionado;
 
 
     //metodo construtor
 
-    public Sala(String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondionado){
+    public Sala(String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondicionado){
         super(nome, descricao, status, capacidade);
         setQuantProjetor(quantProjetor);
-        setQuantArcondicionado(quantArCondionado);
+        setQuantArCondicionado(quantArCondicionado);
 
     }
 
@@ -21,7 +21,7 @@ public class Sala extends Local {
     }
 
     public int getQuantArCondicionado(){
-        return this.quantArCondionado;
+        return this.quantArCondicionado;
     }
 
     //setters
@@ -33,11 +33,35 @@ public class Sala extends Local {
         this.quantProjetor = quantidadeProjetor;
     }
 
-    public void setQuantArcondicionado(int quantArCondionado){
-        if(quantArCondionado < 0){
+    public void setQuantArCondicionado(int quantArCondicionado){
+        if(quantArCondicionado < 0){
             throw new IllegalArgumentException("A quantidade de Ar(es)-condicionado(s) deve ser maior ou igual a 0");
         }
-        this.quantArCondionado= quantArCondionado;
+        this.quantArCondicionado = quantArCondicionado;
+    }
+
+    /*Métodos para as regras de negócios: */
+
+    public boolean temProjetor()
+    {
+        return quantProjetor > 0;
+    }
+
+    public boolean capacidadeAceita(int pessoasEsperadas) {
+        return pessoasEsperadas <= getCapacidade();
+    }
+
+
+    public String toString() {
+        return String.format(
+            "Sala: %s, Descrição: %s, Status: %s, Capacidade: %d, Projetores: %d, Ar-condicionado: %d",
+            getNome(),
+            getDescricao(),
+            getStatus(),
+            getCapacidade(),
+            quantProjetor,
+            quantArCondicionado
+        );
     }
 
 }

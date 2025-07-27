@@ -1,5 +1,7 @@
 package model.locais;
 
+import model.enums.TipoEspaco;
+
 public class Auditorio extends Local {
 
     private boolean possuiSistemaDeSom;
@@ -31,5 +33,23 @@ public class Auditorio extends Local {
 
     public void setPossuiPalco(boolean status){
         this.possuiPalco = status;
+    }
+
+    //MÉTODOS para a lógica de negócios
+    public boolean adequadoPalestras() {
+        return possuiSistemaDeSom;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Auditorio -> Nome: %s, Descricao: %s, Status: %s, Capacidade: %d, Sistema de Som: %s, Palco: %s",
+            getNome(),
+            getDescricao(),
+            getStatus(),
+            getCapacidade(),
+            possuiSistemaDeSom ? "Sim" : "Nao",
+            possuiPalco ? "Sim" : "Nao"
+        );
     }
 }

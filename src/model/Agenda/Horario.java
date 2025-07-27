@@ -1,4 +1,4 @@
-package model.agenda;
+package model.Agenda;
 import java.time.LocalTime;
 
 public enum Horario {

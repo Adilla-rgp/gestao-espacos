@@ -1,12 +1,10 @@
 package model.locais;
 
-public class SalaReuniao extends Local{
+public class SalaReuniao extends Local {
 
     private int quantProjetor;
     private boolean possuiVideoconferencia;
     private boolean possuiSistemaDeSom;
-
-    //metodo construtor
 
     public SalaReuniao(String nome, String descricao, String status, int capacidade, int quantidadeProjetor, boolean possuiVideoconferencia, boolean possuiSistemaDeSom){
         super(nome, descricao, status, capacidade);
@@ -22,7 +20,7 @@ public class SalaReuniao extends Local{
         return this.quantProjetor;
     }
 
-    public boolean getPossuiVideoConferencia(){
+    public boolean getPossuiVideoconferencia(){
         return this.possuiVideoconferencia;
     }
 
@@ -39,11 +37,20 @@ public class SalaReuniao extends Local{
         this.quantProjetor = quantidadeProjetor;
     }
 
-    public void serPossuiVideoConferencia(Boolean status){
+    public void setPossuiVideoconferencia(boolean status){
         this.possuiVideoconferencia = status;
     }
 
-    public void serPossuiSistemaDeSom(Boolean status){
+    public void setPossuiSistemaDeSom(boolean status){
         this.possuiSistemaDeSom = status;
+    }
+
+    //métodos para lógica de negócios
+    public boolean temProjetor() { return quantProjetor > 0; }
+    public boolean adequadaVideoConferencia() { return possuiVideoconferencia && temProjetor(); }
+
+    public String toString() {
+        return String.format("Sala de Reunião:\nNome: %s, capacidade: %d, projetores: %d, som: %s, videoconf: %s",
+        getNome(), getCapacidade(), quantProjetor, possuiSistemaDeSom, possuiVideoconferencia);
     }
 }

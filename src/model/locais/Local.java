@@ -1,6 +1,6 @@
 package model.locais;
 import java.util.Set;
-import model.agenda.Agenda;
+import model.Agenda.Agenda;
 
 public abstract class Local {
     protected String nome;

@@ -1,4 +1,5 @@
 package model.locais;
+import model.enums.TipoEspaco;
 
 public class Campo extends Local{
 
@@ -30,5 +31,10 @@ public class Campo extends Local{
 
     public void setPossuiVestiario(boolean status){
         this.possuiVestiario = status;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Campo -> Nome: %s, capacidade: %d, iluminacao: %s, vestiario: %s", getNome(), getCapacidade(), possuiIluminacao, possuiVestiario);
     }
 }
