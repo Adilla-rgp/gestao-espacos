@@ -11,17 +11,19 @@ public class AplicacaoController {
     private CadastroView telaCadastroView;
     private DashboardView telaDashboardView;
     private CadastroEspacoView telaCadastroEspacoView;
+    private TelaNovaReserva telaNovaReservaView;
 
     private LoginController loginController;
     private CadastroController cadastroController;
     private DashboardController dashboardController;
     private CadastroEspacoController cadastroEspacoController;
 
-    public AplicacaoController(){
+    public AplicacaoController() {
         this.telaLoginView = new LoginView();
         this.telaCadastroView = new CadastroView();
         this.telaDashboardView = new DashboardView();
         this.telaCadastroEspacoView = new CadastroEspacoView();
+        this.telaNovaReservaView = new TelaNovaReserva();
 
         this.loginController = new LoginController(telaLoginView, this);
         this.cadastroController = new CadastroController(telaCadastroView, this);
@@ -31,35 +33,37 @@ public class AplicacaoController {
         mostrarTelaLogin();
     }
 
-
-    public void mostrarTelaLogin(){
+    public void mostrarTelaLogin() {
         esconderTodasTelas();
         telaLoginView.setVisible(true);
     }
 
-    public void mostrarTelaCadastroUsuario(){
+    public void mostrarTelaCadastroUsuario() {
         esconderTodasTelas();
         telaCadastroView.setVisible(true);
     }
 
-    public void mostrarTelaDashboard(){
+    public void mostrarTelaDashboard() {
         esconderTodasTelas();
         telaDashboardView.setVisible(true);
-
     }
-
-    public void mostrarTelaCadastroEspaco(){
+    
+    public void mostrarTelaNovaReserva() {
+        esconderTodasTelas();
+        telaNovaReservaView.setVisible(true);
+    }
+    public void mostrarTelaCadastroEspaco() {
         esconderTodasTelas();
         telaCadastroEspacoView.setVisible(true);
     }
 
-    public void esconderTodasTelas(){
+    
+    public void esconderTodasTelas() {
         telaLoginView.setVisible(false);
         telaCadastroView.setVisible(false);
         telaDashboardView.setVisible(false);
+        telaNovaReservaView.setVisible(false);
         telaCadastroEspacoView.setVisible(false);
+        
     }
-
-
-    
 }
