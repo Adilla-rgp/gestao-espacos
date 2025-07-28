@@ -5,58 +5,62 @@ import java.awt.*;
 
 public class RelatoriosView extends JFrame {
     private JComboBox<String> tipoRelatorioCombo;
+    private JTextField dataInicioField;
+    private JTextField dataFimField;
     private JButton gerarButton;
-    private JTextArea resultadoArea;
+    private JTable tabelaDados;
+    private JButton exportarCSVButton;
+    private JButton exportarPDFButton;
 
     public RelatoriosView() {
         setTitle("Relatórios e Estatísticas");
-        setSize(900, 600);
+        setSize(800, 500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setLayout(new BorderLayout(10, 10));
 
-        // Combo e botão no topo com margem
-        JLabel tipoLabel = new JLabel("Tipo de Relatório:");
+        // Filtros
+        JPanel filtrosPanel = new JPanel(new GridLayout(2, 3, 10, 10));
         tipoRelatorioCombo = new JComboBox<>(new String[]{
-            "Ocupação por Espaço",
-            "Usuários mais Ativos",
-            "Horários de Pico",
-            "Espaços Subutilizados"
+            "Ocupação por Espaço", "Usuários Mais Ativos",
+            "Horários de Pico", "Espaços Subutilizados"
         });
-
+        dataInicioField = new JTextField("dd/mm/aaaa");
+        dataFimField = new JTextField("dd/mm/aaaa");
         gerarButton = new JButton("Gerar Relatório");
 
-        JPanel topoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
-        topoPanel.setBorder(BorderFactory.createEmptyBorder(10, 15, 5, 15));
-        topoPanel.add(tipoLabel);
-        topoPanel.add(tipoRelatorioCombo);
-        topoPanel.add(gerarButton);
+        filtrosPanel.setBorder(BorderFactory.createTitledBorder("Filtros"));
+        filtrosPanel.add(new JLabel("Tipo de Relatório:"));
+        filtrosPanel.add(tipoRelatorioCombo);
+        filtrosPanel.add(new JLabel(""));
+        filtrosPanel.add(new JLabel("Data Início:"));
+        filtrosPanel.add(dataInicioField);
+        filtrosPanel.add(dataFimField);
 
-        // Área de resultado com borda e margens
-        resultadoArea = new JTextArea();
-        resultadoArea.setEditable(false);
-        resultadoArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        resultadoArea.setMargin(new Insets(10, 10, 10, 10));
-        resultadoArea.setLineWrap(true);
-        resultadoArea.setWrapStyleWord(true);
+        // Tabela de dados
+        tabelaDados = new JTable();
+        JScrollPane scroll = new JScrollPane(tabelaDados);
 
-        JScrollPane scrollArea = new JScrollPane(resultadoArea);
-        scrollArea.setBorder(BorderFactory.createTitledBorder("Resultado do Relatório"));
+        // Botões de exportação
+        JPanel exportPanel = new JPanel(new FlowLayout());
+        exportarCSVButton = new JButton("Exportar CSV");
+        exportarPDFButton = new JButton("Exportar PDF");
+        exportPanel.add(exportarCSVButton);
+        exportPanel.add(exportarPDFButton);
 
-        // Layout principal
-        setLayout(new BorderLayout(10, 10));
-        add(topoPanel, BorderLayout.NORTH);
-        add(scrollArea, BorderLayout.CENTER);
+        // Montagem final
+        add(filtrosPanel, BorderLayout.NORTH);
+        add(gerarButton, BorderLayout.CENTER);
+        add(scroll, BorderLayout.SOUTH);
+        add(exportPanel, BorderLayout.PAGE_END);
     }
 
-    public JComboBox<String> getTipoRelatorioCombo() {
-        return tipoRelatorioCombo;
-    }
-
-    public JButton getGerarButton() {
-        return gerarButton;
-    }
-
-    public JTextArea getResultadoArea() {
-        return resultadoArea;
-    }
+    // Getters para o Controller usar
+    public JComboBox<String> getTipoRelatorioCombo() { return tipoRelatorioCombo; }
+    public JTextField getDataInicioField() { return dataInicioField; }
+    public JTextField getDataFimField() { return dataFimField; }
+    public JButton getGerarButton() { return gerarButton; }
+    public JTable getTabelaDados() { return tabelaDados; }
+    public JButton getExportarCSVButton() { return exportarCSVButton; }
+    public JButton getExportarPDFButton() { return exportarPDFButton; }
 }
