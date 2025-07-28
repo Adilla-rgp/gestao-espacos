@@ -7,13 +7,19 @@ public class Laboratorio extends Local {
     private String tipoDeLaboratorio;
     private static final Set<String> TIPOS_DE_LABORATORIO = Set.of("Informatica", "Quimica", "Biologia", "Fisica");
 
-    //metodo construtor
-
+    // Construtor para novos objetos
     public Laboratorio(String nome, String descricao, String status, int capacidade, int quantEquipamentos, String tipoDeLaboratorio){
         super(nome, descricao, status, capacidade);
         setTipoDeLaboratorio(tipoDeLaboratorio);
         setQuantEquipamentos(quantEquipamentos);
     }
+    // Construtor 
+    public Laboratorio(int id, String nome, String descricao, String status, int capacidade, int quantEquipamentos, String tipoDeLaboratorio){
+        super(id, nome, descricao, status, capacidade);
+        setTipoDeLaboratorio(tipoDeLaboratorio);
+        setQuantEquipamentos(quantEquipamentos);
+    }
+
 
     //getters
 

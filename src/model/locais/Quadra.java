@@ -7,10 +7,17 @@ public class Quadra extends Local {
     private boolean possuiIluminacao;
     private static final Set<String> TIPOS_DE_QUADRA = Set.of("Basquete", "Futsal", "Handbol", "vôlei", "tênis", "poliesportiva");
 
-    //metodo construtor
-
+    // Método construtor para novos objetos
     public Quadra(String nome,String descricao, String status, int capacidade, String tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao){
         super(nome, descricao, status, capacidade);
+        setTipoDeQuadra(tipoDeQuadra);
+        this.ehCoberta = ehCoberta;
+        this.possuiIluminacao = possuiIluminacao;
+    }
+
+    // Método construtor para novos objetos
+    public Quadra(int id, String nome,String descricao, String status, int capacidade, String tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao){
+        super(id, nome, descricao, status, capacidade);
         setTipoDeQuadra(tipoDeQuadra);
         this.ehCoberta = ehCoberta;
         this.possuiIluminacao = possuiIluminacao;

@@ -1,8 +1,10 @@
 package model.locais;
+
 import java.util.Set;
-import model.agenda.Agenda;
+import model.Agenda.Agenda;
 
 public abstract class Local {
+    protected int id;  
     protected String nome;
     protected String descricao;
     protected Agenda agenda;
@@ -10,43 +12,61 @@ public abstract class Local {
     protected int capacidade;
     protected static final Set<String> STATUS_VALIDOS = Set.of("Ativo", "Inativo", "Em Uso");
 
-    //metodo construtor
+    // Construtor para novos locais 
+    // public Local(String nome, String descricao, String status, int capacidade){
+    //     setNome(nome);
+    //     this.descricao = descricao;
+    //     this.agenda = new Agenda();
+    //     setStatus(status);
+    //     setCapacidade(capacidade);
+    // }
 
-    public Local(String nome, String descricao, String status, int capacidade){
+    public Local(String nome, String descricao, String status, int capacidade) {
+        this(-1, nome, descricao, status, capacidade); // usa o outro construtor com id = -1
+    }
+
+    // Construtor completo (usado quando carregamos do banco)
+    public Local(int id, String nome, String descricao, String status, int capacidade) {
+        setId(id);
         setNome(nome);
         this.descricao = descricao;
         this.agenda = new Agenda();
         setStatus(status);
         setCapacidade(capacidade);
-
     }
 
-    //getters
+    // Getters
+    public int getId() {
+        return this.id;
+    }
 
-    public String getNome(){
+    public String getNome() {
         return this.nome;
     }
-    
-    public String getDescricao(){
+
+    public String getDescricao() {
         return this.descricao;
     }
 
-    public Agenda getAgenda(){
+    public Agenda getAgenda() {
         return this.agenda;
     }
 
-    public String getStatus(){
+    public String getStatus() {
         return this.status;
     }
 
-    public int getCapacidade(){
+    public int getCapacidade() {
         return this.capacidade;
     }
 
-    //setters
+    // Setters
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public void setCapacidade(int capacidade){
-        if(capacidade <= 0){
+    public void setCapacidade(int capacidade) {
+        if (capacidade <= 0) {
             throw new IllegalArgumentException("A capacidade do local deve ser maior que 0");
         }
         this.capacidade = capacidade;
@@ -60,14 +80,14 @@ public abstract class Local {
         }
     }
 
-    public void setNome(String nome){
-        if(nome == null){
-            throw new IllegalArgumentException("O nome da sala não deve ser vazio");
+    public void setNome(String nome) {
+        if (nome == null || nome.isEmpty()) {
+            throw new IllegalArgumentException("O nome do local não deve ser vazio");
         }
         this.nome = nome;
     }
 
-    public void setDescricao(String descricao){
+    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 }

@@ -21,6 +21,15 @@ public class Predio extends UnidadeFisica{
         this.salasDeReuniao = new HashMap<>();
     }
 
+    public Predio(int idUnidade, String nome, String descricao) {
+        super(nome, descricao);
+        this.idUnidade = idUnidade;
+        this.salas = new HashMap<>();
+        this.laboratorios = new HashMap<>();
+        this.auditorios = new HashMap<>();
+        this.salasDeReuniao = new HashMap<>();
+    }
+
     //getters
 
     public Sala getSala(String nome){

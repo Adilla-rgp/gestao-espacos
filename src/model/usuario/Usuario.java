@@ -2,6 +2,7 @@ package model.usuario;
 import controller.autenticacao.SenhaUtils;
 
 public class Usuario{
+    private int id;
     private String nome;
     private String email;
     private String senhaHash;
@@ -15,7 +16,24 @@ public class Usuario{
         this.senhaHash = SenhaUtils.gerarHash(senha);
     }
 
+    // método construtor para carregar um usuário já existente (com id do banco)
+    public Usuario(int id, String nome, String email, String senhaHash, boolean isAdm) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senhaHash = senhaHash;
+        this.isAdm = isAdm;
+    }
+
     //getters
+
+    public int getId() {
+        return id; 
+    }
+
+    public void setId(int id) { 
+        this.id = id; 
+    }
     
     public String getNome(){
         return this.nome;

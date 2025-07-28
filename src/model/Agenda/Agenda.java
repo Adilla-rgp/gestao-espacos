@@ -1,4 +1,4 @@
-package model.agenda;
+package model.Agenda;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;

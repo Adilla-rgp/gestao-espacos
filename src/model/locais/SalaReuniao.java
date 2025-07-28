@@ -6,14 +6,22 @@ public class SalaReuniao extends Local{
     private boolean possuiVideoconferencia;
     private boolean possuiSistemaDeSom;
 
-    //metodo construtor
-
+    //metodo construtor (novos objetos)
     public SalaReuniao(String nome, String descricao, String status, int capacidade, int quantidadeProjetor, boolean possuiVideoconferencia, boolean possuiSistemaDeSom){
         super(nome, descricao, status, capacidade);
         setQuantProjetor(quantidadeProjetor);
         this.possuiSistemaDeSom = possuiSistemaDeSom;
         this.possuiVideoconferencia = possuiVideoconferencia;
     }
+
+    //metodo construtor (novos objetos)
+    public SalaReuniao(int id, String nome, String descricao, String status, int capacidade, int quantidadeProjetor, boolean possuiVideoconferencia, boolean possuiSistemaDeSom){
+        super(id, nome, descricao, status, capacidade);
+        setQuantProjetor(quantidadeProjetor);
+        this.possuiSistemaDeSom = possuiSistemaDeSom;
+        this.possuiVideoconferencia = possuiVideoconferencia;
+    }
+
 
 
     //getters

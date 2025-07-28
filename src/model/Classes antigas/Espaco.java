@@ -1,4 +1,4 @@
-package model;
+package model.Classes antigas;
 
 public class Espaco {
     private String nome;

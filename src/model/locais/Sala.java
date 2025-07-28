@@ -5,13 +5,18 @@ public class Sala extends Local {
     private int quantArCondionado;
 
 
-    //metodo construtor
-
-    public Sala(String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondionado){
+    // Construtor para novos objetos
+    public Sala(String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondionado) {
         super(nome, descricao, status, capacidade);
         setQuantProjetor(quantProjetor);
         setQuantArcondicionado(quantArCondionado);
+    }
 
+    // Construtor 
+    public Sala(int id, String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondionado) {
+        super(id, nome, descricao, status, capacidade);
+        setQuantProjetor(quantProjetor);
+        setQuantArcondicionado(quantArCondionado);
     }
 
     //getters

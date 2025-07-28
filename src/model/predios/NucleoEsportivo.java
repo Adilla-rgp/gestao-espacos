@@ -19,6 +19,14 @@ public class NucleoEsportivo extends UnidadeFisica {
         this.campos = new HashMap<>();    
     }
 
+    public NucleoEsportivo(int idUnidade, String nome, String descricao) {
+        super(nome, descricao);
+        this.idUnidade = idUnidade;
+        this.salas = new HashMap<>();
+        this.quadras = new HashMap<>();
+        this.campos = new HashMap<>();
+    }
+
     //getters
 
     public Sala getSala(String nome){
