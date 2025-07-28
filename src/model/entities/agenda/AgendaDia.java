@@ -1,4 +1,4 @@
-package model.Agenda;
+package model.entities.agenda;
 import java.util.ArrayList;
 import java.util.List;
 

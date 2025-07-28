@@ -1,4 +1,4 @@
-package model.locais;
+package model.entities.locais;
 import model.enums.TipoEspaco;
 
 public class Campo extends Local{

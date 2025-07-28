@@ -1,10 +1,11 @@
-package model.predios;
+package model.entities.predios;
 import java.util.HashMap;
 import java.util.Map;
-import model.locais.Sala;
-import model.usuario.Usuario;
-import model.locais.Quadra;
-import model.locais.Campo;
+import model.entities.locais.Sala;
+import model.entities.usuario.Usuario;
+import model.entities.locais.Quadra;
+import model.enums.TipoQuadra;
+import model.entities.locais.Campo;
 
 public class NucleoEsportivo extends UnidadeFisica {
     private Map<String,Sala> salas;
@@ -17,6 +18,14 @@ public class NucleoEsportivo extends UnidadeFisica {
         this.salas = new HashMap<>();
         this.quadras = new HashMap<>();
         this.campos = new HashMap<>();    
+    }
+
+    public NucleoEsportivo(int idUnidade, String nome, String descricao) {
+        super(nome, descricao);
+        this.idUnidade = idUnidade;
+        this.salas = new HashMap<>();
+        this.quadras = new HashMap<>();
+        this.campos = new HashMap<>();
     }
 
     //getters
@@ -50,7 +59,7 @@ public class NucleoEsportivo extends UnidadeFisica {
     }
 
     //adicionar quadra
-    public boolean adicionarQuadra(String nome, String descricao, String status, int capacidade, String tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao, Usuario u){
+    public boolean adicionarQuadra(String nome, String descricao, String status, int capacidade, TipoQuadra tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao, Usuario u){
         if(u == null){
             return false;
         }

@@ -1,5 +1,5 @@
 package controller.autenticacao;
-import model.usuario.Usuario;
+import model.entities.usuario.Usuario;
 
 public class Autenticador {
     private UsuarioRepositorio repositorio;

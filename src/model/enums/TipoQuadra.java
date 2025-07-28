@@ -23,4 +23,12 @@ public enum TipoQuadra{
         return descricao;
     }
 
+    public static TipoQuadra fromDescricao(String descricao) {
+        for (TipoQuadra tipo : TipoQuadra.values()) {
+            if (tipo.getDescricao().equalsIgnoreCase(descricao)) {
+                return tipo;
+            }
+        }
+        throw new IllegalArgumentException("Descrição inválida: " + descricao);
+    }
 }

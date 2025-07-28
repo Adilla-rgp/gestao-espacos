@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class CadastroView extends JFrame {
     private JTextField nomeField;
@@ -10,10 +11,8 @@ public class CadastroView extends JFrame {
     private JButton concluirButton;
     private JButton voltarButton;
     private JLabel mensagemLabel;
-    private LoginView loginView; // referência à tela original
 
-    public CadastroView(LoginView loginView) {
-        this.loginView = loginView;
+    public CadastroView() {
 
         setTitle("Cadastro - Gestão de Espaços");
         setSize(900, 600);
@@ -67,19 +66,6 @@ public class CadastroView extends JFrame {
         panel.add(voltarButton);
 
         add(panel);
-
-        // Após cadastrar, volta à tela original
-        concluirButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Usuário cadastrado com sucesso!");
-            loginView.setVisible(true);
-            dispose();
-        });
-
-        // Volta à tela original
-        voltarButton.addActionListener(e -> {
-            loginView.setVisible(true);
-            dispose();
-        });
     }
 
     public String getNome() { 
@@ -90,5 +76,19 @@ public class CadastroView extends JFrame {
     }
     public String getSenha() { 
         return new String(senhaField.getPassword()); 
+    }
+
+    //------------------------------------------------------//
+
+    public void adicionarVoltarButtonListener(ActionListener listener){
+        voltarButton.addActionListener(listener);
+    }
+
+    public void acicionarConcluirButtonListener(ActionListener listener){
+        concluirButton.addActionListener(listener);
+    }
+
+    public void mostrarMensagem(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 }

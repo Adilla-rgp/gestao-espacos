@@ -1,11 +1,12 @@
-package model.predios;
+package model.entities.predios;
 import java.util.HashMap;
 import java.util.Map;
-import model.locais.Sala;
-import model.locais.Laboratorio;
-import model.locais.Auditorio;
-import model.locais.SalaReuniao;
-import model.usuario.Usuario;
+import model.entities.locais.Sala;
+import model.entities.locais.Laboratorio;
+import model.enums.TipoLaboratorio;
+import model.entities.locais.Auditorio;
+import model.entities.locais.SalaReuniao;
+import model.entities.usuario.Usuario;
 
 public class Predio extends UnidadeFisica{
     private Map<String,Sala> salas;
@@ -15,6 +16,15 @@ public class Predio extends UnidadeFisica{
     
     public Predio(String nome, String descricao){
         super(nome, descricao);
+        this.salas = new HashMap<>();
+        this.laboratorios = new HashMap<>();
+        this.auditorios = new HashMap<>();
+        this.salasDeReuniao = new HashMap<>();
+    }
+
+    public Predio(int idUnidade, String nome, String descricao) {
+        super(nome, descricao);
+        this.idUnidade = idUnidade;
         this.salas = new HashMap<>();
         this.laboratorios = new HashMap<>();
         this.auditorios = new HashMap<>();
@@ -57,7 +67,7 @@ public class Predio extends UnidadeFisica{
     }
 
     //adicionar laboratorio
-    public boolean adicionarLaboratorio(String nome, String descricao, String status, int capacidade, int quantEquipamentos, String tipoDeLaboratorio,Usuario u){
+    public boolean adicionarLaboratorio(String nome, String descricao, String status, int capacidade, int quantEquipamentos, TipoLaboratorio tipoDeLaboratorio,Usuario u){
         if(u == null){
             return false;
         }

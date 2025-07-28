@@ -1,10 +1,12 @@
 package app;
-import controller.FluxoUsuarioController;
+import database.DatabaseInitializer;
 
+// Inicializa o Banco de Dados
 public class Main {
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new FluxoUsuarioController();
-        });
+        // Inicializa banco e cria tabelas
+        DatabaseInitializer.init();
+
+        System.out.println("Sistema iniciado.");
     }
 }

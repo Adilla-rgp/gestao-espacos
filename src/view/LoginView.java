@@ -58,11 +58,11 @@ public class LoginView extends JFrame {
         add(panel);
 
         // Envia esta instância para CadastroView
-        cadastrarButton.addActionListener(e -> {
+        /* cadastrarButton.addActionListener(e -> {
             CadastroView cadastroView = new CadastroView(this);
             cadastroView.setVisible(true);
             setVisible(false); // Oculta LoginView temporariamente
-        });
+        }); */
     }
 
     public String getUsuario() {
@@ -77,7 +77,15 @@ public class LoginView extends JFrame {
         entrarButton.addActionListener(listener);
     }
 
-    public void mostrarMensagem(String msg) {
+    /*public void mostrarMensagem(String msg) {
         mensagemLabel.setText(msg);
+    }*/
+
+    public void adicionarCadastrarListener(ActionListener listener){
+        cadastrarButton.addActionListener(listener);
+    }
+
+    public void mostrarMensagem(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 }

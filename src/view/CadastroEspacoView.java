@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class CadastroEspacoView extends JFrame {
     private JTextField nomeField;
@@ -91,4 +92,18 @@ public class CadastroEspacoView extends JFrame {
         localizacaoField.setText("");
         descricaoArea.setText("");
     }
-}
+
+    //--------------------------------------------------------------//
+
+    public void adicionarSalvarButtonListener(ActionListener listener){
+        salvarButton.addActionListener(listener);
+    }
+
+    public void adicionarCancelarButtonListener(ActionListener listener){
+        cancelarButton.addActionListener(listener);
+    }
+
+    public void adicionarLimparButtonListener(ActionListener listener){
+        limparButton.addActionListener(listener);
+    }
+}   

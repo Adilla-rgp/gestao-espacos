@@ -22,4 +22,13 @@ public enum TipoEspaco {
     public String toString() {
         return descricao;
     }
+
+    public static TipoEspaco fromDescricao(String descricao) {
+        for (TipoEspaco tipo : TipoEspaco.values()) {
+            if (tipo.getDescricao().equalsIgnoreCase(descricao)) {
+                return tipo;
+            }
+        }
+        throw new IllegalArgumentException("Descrição inválida: " + descricao);
+    }
 }

@@ -1,19 +1,23 @@
-package model.locais;
+package model.entities.locais;
 import model.enums.TipoQuadra;
-
-import java.util.Set;
-
 
 public class Quadra extends Local {
     private TipoQuadra tipoQuadra; 
     private boolean ehCoberta;
     private boolean possuiIluminacao;
 
-    //metodo construtor
-
-    public Quadra(String nome,String descricao, String status, int capacidade, TipoQuadra tipoQuadra, boolean ehCoberta, boolean possuiIluminacao){
+    // Método construtor para novos objetos
+    public Quadra(String nome,String descricao, String status, int capacidade, TipoQuadra tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao){
         super(nome, descricao, status, capacidade);
         this.tipoQuadra = tipoQuadra;
+        this.ehCoberta = ehCoberta;
+        this.possuiIluminacao = possuiIluminacao;
+    }
+
+    // Método construtor para novos objetos
+    public Quadra(int id, String nome,String descricao, String status, int capacidade, TipoQuadra tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao){
+        super(id, nome, descricao, status, capacidade);
+        setTipoDeQuadra(tipoDeQuadra);
         this.ehCoberta = ehCoberta;
         this.possuiIluminacao = possuiIluminacao;
     }
@@ -59,7 +63,7 @@ public class Quadra extends Local {
     public String toString() {
         return String.format(
             "Quadra{nome='%s', descricao='%s', status='%s', capacidade=%d, tipoQuadra=%s, ehCoberta=%b, possuiIluminacao=%b}",
-            getNome(), getDescricao(), getStatus(), getCapacidade(), tipoQuadra, ehCoberta, possuiIluminacao
+            getNome(), getDescricao(), getStatus(), getCapacidade(), tipoQuadra.toString(), ehCoberta, possuiIluminacao
         );
     }
 }

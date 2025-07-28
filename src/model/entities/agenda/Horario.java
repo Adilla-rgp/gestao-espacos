@@ -1,4 +1,4 @@
-package model.Agenda;
+package model.entities.agenda;
 import java.time.LocalTime;
 
 public enum Horario {
@@ -8,7 +8,7 @@ public enum Horario {
     HORARIO_10_11("10:00", "11:00"),
     HORARIO_11_12("11:00","12:00"),
     HORARIO_14_15("14:00", "15:00"),
-    HORARIO_15_16("15:00", "16,00"),
+    HORARIO_15_16("15:00", "16:00"),
     HORARIO_16_17("16:00", "17:00"),
     HORARIO_17_18("17:00", "18:00"),
     HORARIO_18_19("18:00", "19:00");

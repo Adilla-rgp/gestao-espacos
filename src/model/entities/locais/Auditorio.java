@@ -1,4 +1,4 @@
-package model.locais;
+package model.entities.locais;
 
 import model.enums.TipoEspaco;
 
@@ -7,10 +7,16 @@ public class Auditorio extends Local {
     private boolean possuiSistemaDeSom;
     private boolean possuiPalco;
 
-    //metodo construtor
-
+    // Construtor para novos objetos
     public Auditorio(String nome, String descricao, String status, int capacidade, boolean possuiSistemaDeSom, boolean possuiPalco){
         super(nome, descricao, status, capacidade);
+        this.possuiSistemaDeSom = possuiSistemaDeSom;
+        this.possuiPalco = possuiPalco;
+    }
+
+    // Construtor 
+    public Auditorio(int id, String nome, String descricao, String status, int capacidade, boolean possuiSistemaDeSom, boolean possuiPalco){
+        super(id, nome, descricao, status, capacidade);
         this.possuiSistemaDeSom = possuiSistemaDeSom;
         this.possuiPalco = possuiPalco;
     }

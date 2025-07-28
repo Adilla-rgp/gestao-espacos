@@ -1,4 +1,4 @@
-package model.Agenda;
+package model.entities.agenda;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;

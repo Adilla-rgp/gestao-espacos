@@ -1,17 +1,21 @@
-package model.locais;
+package model.entities.locais;
 
 public class Sala extends Local {
     private int quantProjetor;
     private int quantArCondicionado;
 
-
-    //metodo construtor
-
-    public Sala(String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondicionado){
+    // Construtor para novos objetos
+    public Sala(String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondionado) {
         super(nome, descricao, status, capacidade);
         setQuantProjetor(quantProjetor);
-        setQuantArCondicionado(quantArCondicionado);
+        setQuantArCondicionado(quantArCondionado);
+    }
 
+    // Construtor 
+    public Sala(int id, String nome, String descricao, String status, int capacidade, int quantProjetor, int quantArCondionado) {
+        super(id, nome, descricao, status, capacidade);
+        setQuantProjetor(quantProjetor);
+        setQuantArCondicionado(quantArCondionado);
     }
 
     //getters
@@ -50,7 +54,6 @@ public class Sala extends Local {
     public boolean capacidadeAceita(int pessoasEsperadas) {
         return pessoasEsperadas <= getCapacidade();
     }
-
 
     public String toString() {
         return String.format(

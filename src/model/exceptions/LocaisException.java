@@ -65,3 +65,4 @@ public class LocaisException extends Exception {
             super("Tipo de espaço inválido: " + tipo, "TIPO_ESPACO_INVALIDO");
         }
     }
+}

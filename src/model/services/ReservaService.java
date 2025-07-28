@@ -1,11 +1,11 @@
 package model.services;
 
-import model.locais.*;
+import model.entities.locais.*;
 import model.enums.*;
 import model.exceptions.*;
-import model.usuario.Usuario;
-import model.Agenda.Reserva;
-import model.Agenda.Horario;
+import model.entities.usuario.Usuario;
+import model.entities.agenda.Reserva;
+import model.entities.agenda.Horario;
 import java.time.*;
 import java.util.*;
 
@@ -28,7 +28,7 @@ public class ReservaService {
     public Reserva criarReserva(String nome, String descricao, Usuario usuario, Local local, Horario horario) throws ReservaException, LocaisException, UsuarioException {
         
         // Validações basicas:
-        validarUsuarioAtivo(usuario); //se o usuario esta ativo no sistema
+       // validarUsuarioAtivo(usuario); //se o usuario esta ativo no sistema
         validarHorarioReserva(horario); //valida o horario da reserva
 
         // Criar reserva temporária para validações
@@ -133,12 +133,13 @@ public class ReservaService {
     // MÉTODOS PRIVADOS DE VALIDAÇAO
     
     //valida se o usuario esta ativo
-    private void validarUsuarioAtivo(Usuario usuario) throws UsuarioException.UsuarioInativoException {
+/*   private void validarUsuarioAtivo(Usuario usuario) throws UsuarioException.UsuarioInativoException {
         if (!usuario.isAtivo()) {
             throw new UsuarioException.UsuarioInativoException(usuario.getNome());
         }
     }
-    
+*/
+
     private void validarHorarioReserva(Horario horario) throws ReservaException.DataInvalidaException {
         if (horario == null) {
             //se o horario for nulo, barra a reserva
@@ -190,7 +191,6 @@ public class ReservaService {
         }
     }
 
-
     //processa reservas feitas simultaneamente se o o local e os horarios forem diferentes
     private void validarReservasSimultaneas(Usuario usuario, Horario horario) throws ReservaException.HorarioIndisponivelException {
         
@@ -203,7 +203,7 @@ public class ReservaService {
     
     // Verifica se é o mesmo usuário que fez a reserva ou se é admin
     private boolean podeCancel(Reserva reserva, Usuario usuario) {
-        return reserva.getNome().equals(usuario.getNome()) || "Admin".equalsIgnoreCase(usuario.getTipo());
+        return reserva.getNome().equals(usuario.getNome()) || usuario.getStatusAdm();
     }
     
     //Validação do prazo de cancelamento

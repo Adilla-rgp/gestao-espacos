@@ -1,7 +1,7 @@
 package controller.autenticacao;
 import java.util.HashMap;
 import java.util.Map;
-import model.usuario.Usuario;
+import model.entities.usuario.Usuario;
 
 public class UsuarioRepositorio {
     private Map<String, Usuario> usuarios;

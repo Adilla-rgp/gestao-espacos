@@ -1,10 +1,10 @@
 package model.services;
 
-import model.locais.*;
+import model.entities.locais.*;
 import model.enums.*;
 import model.exceptions.*;
-import model.usuario.Usuario;
-import model.Agenda.Reserva;
+import model.entities.usuario.Usuario;
+import model.entities.agenda.Reserva;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
