@@ -1,12 +1,9 @@
 package app;
-import database.DatabaseInitializer;
+import view.*;
+import controller.app.AplicacaoController;;
 
-// Inicializa o Banco de Dados
 public class Main {
-    public static void main(String[] args) {
-        // Inicializa banco e cria tabelas
-        DatabaseInitializer.init();
-
-        System.out.println("Sistema iniciado.");
+     public static void main(String[] args) {
+        new AplicacaoController();
     }
 }

@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 
@@ -77,8 +78,6 @@ public class CadastroView extends JFrame {
     public String getSenha() { 
         return new String(senhaField.getPassword()); 
     }
-
-    //------------------------------------------------------//
 
     public void adicionarVoltarButtonListener(ActionListener listener){
         voltarButton.addActionListener(listener);

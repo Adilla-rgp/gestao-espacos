@@ -2,13 +2,15 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class DashboardView extends JFrame {
     private JLabel tituloLabel;
     private JButton novaReservaButton;
     private JTextArea estatisticasArea;
 
-    public DashboardView() {
+    public DashboardView(){
+
         setTitle("Dashboard - Gestão de Espaços");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,7 +52,11 @@ public class DashboardView extends JFrame {
         estatisticasArea.setText(texto);
     }
 
-    public void adicionarNovaReservaListener(java.awt.event.ActionListener listener) {
+    public void adicionarNovaReservaListener(ActionListener listener) {
         novaReservaButton.addActionListener(listener);
+    }
+
+    public void mostrarMensagem(String msg) {
+        JOptionPane.showMessageDialog(this, msg);
     }
 }

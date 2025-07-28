@@ -14,7 +14,7 @@ public class UsuarioDAO {
 
     // CREATE: Insere um novo usuário na tabela usuario.
 
-    public void inserirUsuario(Usuario usuario) {
+    public static void inserirUsuario(Usuario usuario) throws SQLException{
         
         // comando sql com placeholders (?) para os parâmetros
         String sqlInserir = "INSERT INTO usuario (nome, email, senha_hash, is_adm, ativo) VALUES (?, ?, ?, ?, ?)";
@@ -36,12 +36,14 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             System.err.println("Erro ao inserir usuário: " + e.getMessage());
+            throw new SQLException("Este email já está cadastrado.");
+
         }
     }
 
     // READ: Busca um usuário pelo email (SELECT com WHERE).
     
-    public Usuario buscarPorEmail(String email) {
+    public static Usuario buscarPorEmail(String email) throws SQLException {
 
         String sqlBuscar = "SELECT * FROM usuario WHERE email = ?";
 
@@ -66,6 +68,7 @@ public class UsuarioDAO {
 
         } catch (SQLException e) {
             System.err.println("Erro ao buscar usuário: " + e.getMessage());
+            throw new SQLException("Erro ao buscar usuario " + e.getMessage());
         }
 
         return null; 

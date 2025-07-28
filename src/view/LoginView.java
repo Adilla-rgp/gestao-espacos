@@ -12,6 +12,7 @@ public class LoginView extends JFrame {
     private JLabel mensagemLabel;
 
     public LoginView() {
+
         setTitle("Login - Gestão de Espaços");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,7 +26,7 @@ public class LoginView extends JFrame {
         mensagemLabel.setForeground(Color.RED);
         mensagemLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel usuarioLabel = new JLabel("Usuário ou Email:");
+        JLabel usuarioLabel = new JLabel("Email:");
         usuarioLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         usuarioField = new JTextField();
         usuarioField.setMaximumSize(new Dimension(200, 22)); 
@@ -57,15 +58,9 @@ public class LoginView extends JFrame {
 
         add(panel);
 
-        // Envia esta instância para CadastroView
-        /* cadastrarButton.addActionListener(e -> {
-            CadastroView cadastroView = new CadastroView(this);
-            cadastroView.setVisible(true);
-            setVisible(false); // Oculta LoginView temporariamente
-        }); */
     }
 
-    public String getUsuario() {
+    public String getEmail() {
         return usuarioField.getText();
     }
 
@@ -76,10 +71,6 @@ public class LoginView extends JFrame {
     public void adicionarLoginListener(ActionListener listener) {
         entrarButton.addActionListener(listener);
     }
-
-    /*public void mostrarMensagem(String msg) {
-        mensagemLabel.setText(msg);
-    }*/
 
     public void adicionarCadastrarListener(ActionListener listener){
         cadastrarButton.addActionListener(listener);
