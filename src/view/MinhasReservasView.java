@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 public class MinhasReservasView extends JFrame {
     private JTable tabela;
     private JButton cancelarButton;
-    private JButton detalhesButton;
-    private JButton voltarButton;
+    private JButton confirmarButton;
+    private JButton voltarButton; // novo botão
 
     public MinhasReservasView() {
         setTitle("Minhas Reservas");
@@ -31,13 +31,13 @@ public class MinhasReservasView extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(tabela);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Reservas Agendadas"));
-        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.getViewport().setBackground(Color.WHITE); // mantém fundo da tabela branco
         scrollPane.setBackground(fundo);
 
         // Botões estilizados
         cancelarButton = new JButton("Cancelar Reserva");
-        detalhesButton = new JButton("Confirmar Reserva");
-        voltarButton = new JButton("Voltar");
+        confirmarButton = new JButton("Confirmar Reserva");
+        voltarButton = new JButton("Voltar"); // botão Voltar
 
         Font fonteBotao = new Font("SansSerif", Font.BOLD, 14);
         Dimension tamanhoBotao = new Dimension(180, 35);
@@ -48,11 +48,11 @@ public class MinhasReservasView extends JFrame {
         cancelarButton.setFocusPainted(false);
         cancelarButton.setPreferredSize(tamanhoBotao);
 
-        detalhesButton.setFont(fonteBotao);
-        detalhesButton.setBackground(new Color(33, 150, 243));
-        detalhesButton.setForeground(Color.WHITE);
-        detalhesButton.setFocusPainted(false);
-        detalhesButton.setPreferredSize(tamanhoBotao);
+        confirmarButton.setFont(fonteBotao);
+        confirmarButton.setBackground(new Color(33, 150, 243));
+        confirmarButton.setForeground(Color.WHITE);
+        confirmarButton.setFocusPainted(false);
+        confirmarButton.setPreferredSize(tamanhoBotao);
 
         voltarButton.setFont(fonteBotao);
         voltarButton.setBackground(new Color(158, 158, 158));
@@ -63,14 +63,16 @@ public class MinhasReservasView extends JFrame {
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
         botoesPanel.setBackground(fundo);
         botoesPanel.add(cancelarButton);
-        botoesPanel.add(detalhesButton);
-        botoesPanel.add(voltarButton); // botão Voltar adicionado
+        botoesPanel.add(confirmarButton);
+        botoesPanel.add(voltarButton); // adiciona ao painel
 
+        // Margem lateral mais confortável
         JPanel margemPanel = new JPanel(new BorderLayout());
         margemPanel.setBackground(fundo);
         margemPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
         margemPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Composição final
         add(margemPanel, BorderLayout.CENTER);
         add(botoesPanel, BorderLayout.SOUTH);
     }
@@ -83,8 +85,8 @@ public class MinhasReservasView extends JFrame {
         return cancelarButton;
     }
 
-    public JButton getDetalhesButton() {
-        return detalhesButton;
+    public JButton getConfirmarButton() {
+        return confirmarButton;
     }
 
     public JButton getVoltarButton() {
@@ -95,7 +97,19 @@ public class MinhasReservasView extends JFrame {
         tabela.setModel(model);
     }
 
-    public void adicionarVoltarListener(ActionListener listener) {
+    public void adicionarConfirmarButtonListener(ActionListener listener){
+        confirmarButton.addActionListener(listener);
+    }
+
+    public void adicionarCancelarButtonListener(ActionListener listener){
+        cancelarButton.addActionListener(listener);
+    }
+
+    public void adicionarVoltarButtonListener(ActionListener listener){
         voltarButton.addActionListener(listener);
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
     }
 }
