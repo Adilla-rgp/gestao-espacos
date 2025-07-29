@@ -1,5 +1,7 @@
 package model.entities.agenda;
 import  model.entities.locais.*;
+import model.enums.TipoStatusReserva;
+
 import java.time.LocalDate;
 
 
@@ -12,7 +14,7 @@ public class Reserva {
     private Horario horario;
     private Local local;
     private LocalDate data;    
-    private String status;     
+    private TipoStatusReserva status;     
 
 
     // Construtor vazio
@@ -27,7 +29,8 @@ public class Reserva {
         this.descricao = descricao;
         this.horario = horario;
         this.data = data;
-        this.status = status;
+        this.status = TipoStatusReserva.fromDescricao(status);
+        this.local = null;
     }
 
     // Construtores para lógica sem banco
@@ -46,6 +49,9 @@ public class Reserva {
 
     // getters 
 
+    public String getIdString(){
+        return "a";
+    }
     public int getId() {
         return idReserva;
     }
@@ -70,7 +76,7 @@ public class Reserva {
         return data;
     }
     public String getStatus() {
-        return status;
+        return status.getDescricao();
     }
     // retorna o horário de início e fim usando o objeto horario
     public String getHorarioInicio() {
@@ -81,8 +87,11 @@ public class Reserva {
         return horario != null ? horario.getFim().toString() : null;
     }
 
-    public String getEspaco() {
-        return local.getNome();
+    public String getEspacoNome() {
+        if(local != null){
+            return local.getNome();
+        }
+        return "INDISPONIVEL";
     }
 
     // setters
@@ -119,11 +128,15 @@ public class Reserva {
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = TipoStatusReserva.fromDescricao(status);
     }
 
     // verifica a reserva conflita com outra
     public boolean conflita(Reserva outro) {
         return this.horario == outro.horario;
+    }
+
+    public String toStringHorario(){
+        return getHorarioInicio() + " --> " + getHorarioFim();
     }
 }

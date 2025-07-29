@@ -29,13 +29,19 @@ public class LoginController {
             if(user != null){        
                 String senhaHash = SenhaUtils.gerarHash(senha);                 //verifica se encontrou o usuario pelo email
                 if(senhaHash.equals(user.getSenhaHash())){                      //verifica se a senha está correta
-                    controller.mostrarTelaDashboard();
+                    controller.setUsuario(user);
+                    if(controller.getUsuario().getStatusAdm()){
+                        controller.mostrarTelaADMDashboard();
+                    }else{
+                        controller.mostrarTelaDashboard();
+                    }
                 }else{
                     telaLogin.mostrarMensagem("Dados invalidos");
                 }
             }else{
                 telaLogin.mostrarMensagem("Dados invalidos");
             }
+
         }catch(Exception e){
             telaLogin.mostrarMensagem("Erro ao buscar");
         }

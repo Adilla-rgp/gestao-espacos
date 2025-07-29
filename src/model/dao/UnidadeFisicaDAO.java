@@ -64,7 +64,7 @@ public class UnidadeFisicaDAO {
     }
 
     // READ: lista todas as unidades
-    public List<UnidadeFisica> listarTodas() {
+    public static List<UnidadeFisica> listarTodas() {
         List<UnidadeFisica> lista = new ArrayList<>();
         String sql = "SELECT * FROM unidade_fisica";
         try (Connection conn = ConnectionFactory.getConnection();
@@ -117,7 +117,7 @@ public class UnidadeFisicaDAO {
     }
 
     // mapeando ResultSet para o tipo correto
-    private UnidadeFisica mapearUnidade(ResultSet rs) throws SQLException {
+    private static UnidadeFisica mapearUnidade(ResultSet rs) throws SQLException {
         String tipo = rs.getString("tipo");
         String nome = rs.getString("nome");
         String descricao = rs.getString("descricao");

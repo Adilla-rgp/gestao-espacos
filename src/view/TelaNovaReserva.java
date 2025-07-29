@@ -5,10 +5,11 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class TelaNovaReserva extends JFrame {
 
-    private JComboBox<String> comboPredio;
+    private JComboBox<String> comboUnidade;
     private JComboBox<String> comboSala;
     private JComboBox<String> comboHorario;
     private JTextField txtData; // campo de data adicionado
@@ -34,15 +35,15 @@ public class TelaNovaReserva extends JFrame {
         JLabel lblPredio = new JLabel("Selecione o Prédio:");
         lblPredio.setFont(fonteLabel);
         lblPredio.setAlignmentX(Component.CENTER_ALIGNMENT);
-        comboPredio = new JComboBox<>(new String[] { "Prédio A", "Prédio B", "Prédio C" });
-        comboPredio.setFont(fonteCampo);
-        comboPredio.setMaximumSize(new Dimension(400, 30));
-        comboPredio.setAlignmentX(Component.CENTER_ALIGNMENT);
+        comboUnidade = new JComboBox<>(new String[] {});
+        comboUnidade.setFont(fonteCampo);
+        comboUnidade.setMaximumSize(new Dimension(400, 30));
+        comboUnidade.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblSala = new JLabel("Selecione a Sala:");
         lblSala.setFont(fonteLabel);
         lblSala.setAlignmentX(Component.CENTER_ALIGNMENT);
-        comboSala = new JComboBox<>(new String[] { "Sala 101", "Sala 102", "Sala 201", "Sala 202" });
+        comboSala = new JComboBox<>(new String[] {});
         comboSala.setFont(fonteCampo);
         comboSala.setMaximumSize(new Dimension(400, 30));
         comboSala.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,13 +60,7 @@ public class TelaNovaReserva extends JFrame {
         JLabel lblHorario = new JLabel("Selecione o Horário:");
         lblHorario.setFont(fonteLabel);
         lblHorario.setAlignmentX(Component.CENTER_ALIGNMENT);
-        comboHorario = new JComboBox<>(new String[] {
-            "08:00 - 09:00",
-            "09:00 - 10:00",
-            "10:00 - 11:00",
-            "14:00 - 15:00",
-            "15:00 - 16:00"
-        });
+        comboHorario = new JComboBox<>(new String[] {});
         comboHorario.setFont(fonteCampo);
         comboHorario.setMaximumSize(new Dimension(400, 30));
         comboHorario.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -92,7 +87,7 @@ public class TelaNovaReserva extends JFrame {
         add(Box.createVerticalStrut(40));
         add(lblPredio);
         add(Box.createVerticalStrut(8));
-        add(comboPredio);
+        add(comboUnidade);
         add(Box.createVerticalStrut(20));
         add(lblSala);
         add(Box.createVerticalStrut(8));
@@ -112,10 +107,10 @@ public class TelaNovaReserva extends JFrame {
         add(Box.createVerticalGlue());
 
         // Evento do botão confirmar
-        btnConfirmar.addActionListener(new ActionListener() {
+/*      btnConfirmar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String predio = (String) comboPredio.getSelectedItem();
+                String predio = (String) comboUnidade.getSelectedItem();
                 String sala = (String) comboSala.getSelectedItem();
                 String horario = (String) comboHorario.getSelectedItem();
                 String data = txtData.getText();
@@ -145,6 +140,36 @@ public class TelaNovaReserva extends JFrame {
             }
         });
 
-        btnVoltar.addActionListener(e -> dispose());
+     */
+    }
+
+    public void adicionarVoltarBottonListener(ActionListener listener){
+        btnVoltar.addActionListener(listener);
+    }
+
+    public void adicionarConfirmarBottonListener(ActionListener listener){
+        btnConfirmar.addActionListener(listener);
+    }
+
+    public JComboBox<String> getComboUnidade() {
+        return comboUnidade;
+    }   
+
+    public JComboBox<String> getComboSala() {
+        return comboSala;
+    }
+
+    public void atualizarComboUnidade(List<String> unidades) {
+        comboUnidade.removeAllItems();
+        for (String unidade : unidades) {
+            comboUnidade.addItem(unidade);
+        }
+    }
+
+    public void atualizarComboSala(List<String> salas) {
+        comboSala.removeAllItems();
+        for (String sala : salas) {
+            comboSala.addItem(sala);
+        }
     }
 }

@@ -3,8 +3,11 @@ package model.dao;
 import database.ConnectionFactory;
 import model.entities.agenda.Reserva;
 import model.entities.agenda.Horario;
+import model.entities.locais.Local;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,18 +108,19 @@ public class ReservaDAO {
     }
 
     // READ: Lista todas as reservas de um usuário específico
-    public List<Reserva> listarReservasPorUsuario(int idUsuario) {
+    public static List<Reserva> listarReservasPorUsuario(int idUsuario) {
         String sql = "SELECT * FROM reserva WHERE id_usuario = ?";
         List<Reserva> lista = new ArrayList<>();
 
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+            
             stmt.setInt(1, idUsuario);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Horario horarioEncontrado = mapearHorario(rs);
+                LocalDate data = LocalDate.parse(rs.getString("data"));
 
                 Reserva r = new Reserva(
                         rs.getInt("id_usuario"),
@@ -124,10 +128,12 @@ public class ReservaDAO {
                         rs.getString("nome"),
                         rs.getString("descricao"),
                         horarioEncontrado,
-                        rs.getDate("data").toLocalDate(),
+                        data,
                         rs.getString("status")
                 );
                 r.setId(rs.getInt("id_reserva"));
+                Local localSala = EspacoDAO.buscarPorId(rs.getInt("id_usuario"));
+                r.setLocal(localSala);
 
                 lista.add(r);
             }
@@ -180,13 +186,14 @@ public class ReservaDAO {
     }
 
     // método que mapea os horários do banco para o enum Horario
-    private Horario mapearHorario(ResultSet rs) throws SQLException {
-        Time inicio = rs.getTime("horario_inicio");
-        Time fim = rs.getTime("horario_fim");
+    private static Horario mapearHorario(ResultSet rs) throws SQLException {
+        LocalTime inicio = LocalTime.parse(rs.getString("horario_inicio"));
+        LocalTime fim = LocalTime.parse(rs.getString("horario_fim"));
+
 
         for (Horario h : Horario.values()) {
-            if (h.getInicio().equals(inicio.toLocalTime()) &&
-                h.getFim().equals(fim.toLocalTime())) {
+            if (h.getInicio().equals(inicio) &&
+                h.getFim().equals(fim)) {
                 return h;
             }
         }

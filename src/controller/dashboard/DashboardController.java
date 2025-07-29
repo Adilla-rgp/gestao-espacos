@@ -11,6 +11,12 @@ public class DashboardController {
         this.dashboardView = dashboardView;
         this.controller = controller;
 
-        dashboardView.adicionarNovaReservaListener(e -> controller.mostrarTelaCadastroEspaco());
+        dashboardView.adicionarMinhasReservasListener(e -> minhasReservas());
+        dashboardView.adicionarNovaReservaListener(e -> controller.mostrarTelaNovaReserva());
+    }
+
+    private void minhasReservas(){
+        controller.atualizarTabelaReservasUsuario();
+        controller.mostrarTelaMinhasReservas();
     }
 }
