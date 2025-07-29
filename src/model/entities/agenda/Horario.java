@@ -28,4 +28,6 @@ public enum Horario {
     public LocalTime getFim() {
         return fim;
     }
+
+    
 }

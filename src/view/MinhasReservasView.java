@@ -3,11 +3,12 @@ package view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class MinhasReservasView extends JFrame {
     private JTable tabela;
     private JButton cancelarButton;
-    private JButton detalhesButton;
+    private JButton confirmarButton;
 
     public MinhasReservasView() {
         setTitle("Minhas Reservas");
@@ -34,7 +35,7 @@ public class MinhasReservasView extends JFrame {
 
         // Botões estilizados
         cancelarButton = new JButton("Cancelar Reserva");
-        detalhesButton = new JButton("Confirmar Reserva");
+        confirmarButton = new JButton("Confirmar Reserva");
 
         Font fonteBotao = new Font("SansSerif", Font.BOLD, 14);
         Dimension tamanhoBotao = new Dimension(180, 35);
@@ -45,16 +46,16 @@ public class MinhasReservasView extends JFrame {
         cancelarButton.setFocusPainted(false);
         cancelarButton.setPreferredSize(tamanhoBotao);
 
-        detalhesButton.setFont(fonteBotao);
-        detalhesButton.setBackground(new Color(33, 150, 243));
-        detalhesButton.setForeground(Color.WHITE);
-        detalhesButton.setFocusPainted(false);
-        detalhesButton.setPreferredSize(tamanhoBotao);
+        confirmarButton.setFont(fonteBotao);
+        confirmarButton.setBackground(new Color(33, 150, 243));
+        confirmarButton.setForeground(Color.WHITE);
+        confirmarButton.setFocusPainted(false);
+        confirmarButton.setPreferredSize(tamanhoBotao);
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
         botoesPanel.setBackground(fundo);
         botoesPanel.add(cancelarButton);
-        botoesPanel.add(detalhesButton);
+        botoesPanel.add(confirmarButton);
 
         // Margem lateral mais confortável
         JPanel margemPanel = new JPanel(new BorderLayout());
@@ -75,11 +76,23 @@ public class MinhasReservasView extends JFrame {
         return cancelarButton;
     }
 
-    public JButton getDetalhesButton() {
-        return detalhesButton;
+    public JButton getconfirmarButton() {
+        return confirmarButton;
     }
 
     public void setTabelaModel(DefaultTableModel model) {
         tabela.setModel(model);
+    }
+
+    public void adicionarConfirmarButtonListener(ActionListener listener){
+        confirmarButton.addActionListener(listener);
+    }
+
+    public void adicionarCancelarButtonListener(ActionListener listener){
+        cancelarButton.addActionListener(listener);
+    }
+    
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
     }
 }

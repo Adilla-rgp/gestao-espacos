@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class AdminDashboardView extends JFrame {
     private JLabel tituloLabel;
-    private JButton novaReservaButton;
+    private JButton cadastrarEspacosButton;
     private JButton minhasReservasButton;
 
     private JLabel totalEspacosLabel;
@@ -29,16 +29,16 @@ public class AdminDashboardView extends JFrame {
         tituloLabel = new JLabel("Admin: Bem-vindo!", SwingConstants.CENTER);
         tituloLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
 
-        novaReservaButton = new JButton("Cadastro de espaços");
+        cadastrarEspacosButton = new JButton("Cadastro de espaços");
         minhasReservasButton = new JButton("Minhas Reservas");
 
-        for (JButton botao : new JButton[]{novaReservaButton, minhasReservasButton}) {
+        for (JButton botao : new JButton[]{cadastrarEspacosButton, minhasReservasButton}) {
             botao.setFont(new Font("SansSerif", Font.BOLD, 14));
             botao.setPreferredSize(new Dimension(160, 32));
         }
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        botoesPanel.add(novaReservaButton);
+        botoesPanel.add(cadastrarEspacosButton);
         botoesPanel.add(minhasReservasButton);
 
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -153,8 +153,8 @@ public class AdminDashboardView extends JFrame {
         tabelaResumo.setModel(model);
     }
 
-    public void adicionarNovaReservaListener(ActionListener listener) {
-        novaReservaButton.addActionListener(listener);
+    public void adicionarCadastrarEspacosButtonListener(ActionListener listener) {
+        cadastrarEspacosButton.addActionListener(listener);
     }
 
     public void adicionarMinhasReservasListener(ActionListener listener) {

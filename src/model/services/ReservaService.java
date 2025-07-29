@@ -62,7 +62,7 @@ public class ReservaService {
         
         // Verifica se a reserva existe
         if (!reservas.contains(reserva)) {
-            throw new ReservaException.ReservaNaoEncontradaException( reserva.getEspaco() + " - " + reserva.getHorarioInicio()); 
+            throw new ReservaException.ReservaNaoEncontradaException( reserva.getEspacoNome() + " - " + reserva.getHorarioInicio()); 
         }
         
         // Verificar permissões de cancelamento
@@ -105,7 +105,7 @@ public class ReservaService {
         List<Reserva> reservasLocal = new ArrayList<>();
         
         for (Reserva reserva : reservas) {
-            if (reserva.getEspaco().equals(local.getNome())) {
+            if (reserva.getEspacoNome().equals(local.getNome())) {
                 reservasLocal.add(reserva);
             }
         }
@@ -128,7 +128,7 @@ public class ReservaService {
     
     //CONFLITO ENTRE DUAS RESERVAS
     public boolean verificarConflito(Reserva reserva1, Reserva reserva2) {
-        return reserva1.conflita(reserva2) && reserva1.getEspaco().equals(reserva2.getEspaco());
+        return reserva1.conflita(reserva2) && reserva1.getEspacoNome().equals(reserva2.getEspacoNome());
     }
     // MÉTODOS PRIVADOS DE VALIDAÇAO
     
@@ -169,7 +169,7 @@ public class ReservaService {
     //verifica se o local esta disponivel
     private boolean isLocalDisponivel(Local local, Horario horario) {
         for (Reserva reserva : reservas) {
-            if (reserva.getEspaco().equals(local.getNome()) && reserva.getHorarioInicio().equals(horario.getInicio().toString())) {
+            if (reserva.getEspacoNome().equals(local.getNome()) && reserva.getHorarioInicio().equals(horario.getInicio().toString())) {
                 return false;
             }
         }

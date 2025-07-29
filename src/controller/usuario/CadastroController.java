@@ -22,7 +22,7 @@ public class CadastroController {
     }
 
     public void Cadastrar(){
-        String nome = cadastroView.getName();
+        String nome = cadastroView.getNome();
         String email = cadastroView.getEmail();
         String senha = cadastroView.getSenha();
         try{

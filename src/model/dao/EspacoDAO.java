@@ -116,7 +116,7 @@ public class EspacoDAO {
         stmtSubclasse.close();
     }
 
-    public Local buscarPorId(int idEspaco) throws SQLException {
+    public static Local buscarPorId(int idEspaco) throws SQLException {
         String sql = "SELECT * FROM espaco WHERE id_espaco = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -140,7 +140,7 @@ public class EspacoDAO {
     }
 
     // carrega a tabela filha e retorna a subclasse correspondente
-    private Local carregarSubclasse(Connection conn, int idEspaco, String nome, String descricao, String status, int capacidade) throws SQLException {
+    private static Local carregarSubclasse(Connection conn, int idEspaco, String nome, String descricao, String status, int capacidade) throws SQLException {
 
         // Sala
         try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM sala WHERE id_espaco = ?")) {
