@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class ListagemReservasAdminView extends JFrame {
     private JTable tabela;
@@ -14,6 +15,7 @@ public class ListagemReservasAdminView extends JFrame {
     private JButton filtrarButton;
     private JButton cancelarReservaButton;
     private JButton detalhesButton;
+    private JButton voltarButton;
 
     public ListagemReservasAdminView() {
         setTitle("Todas as Reservas - Administração");
@@ -63,10 +65,12 @@ public class ListagemReservasAdminView extends JFrame {
         // Botões de ação
         cancelarReservaButton = new JButton("Cancelar Reserva");
         detalhesButton = new JButton("Ver Detalhes");
+        voltarButton = new JButton("Voltar");
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         botoesPanel.add(detalhesButton);
         botoesPanel.add(cancelarReservaButton);
+        botoesPanel.add(voltarButton); // Adicionado botão Voltar
 
         // Montagem da tela
         add(filtroContainer, BorderLayout.NORTH);
@@ -84,8 +88,14 @@ public class ListagemReservasAdminView extends JFrame {
     public JButton getFiltrarButton() { return filtrarButton; }
     public JButton getCancelarReservaButton() { return cancelarReservaButton; }
     public JButton getDetalhesButton() { return detalhesButton; }
+    public JButton getVoltarButton() { return voltarButton; }
 
     public void setTabelaModel(DefaultTableModel model) {
         tabela.setModel(model);
+    }
+
+    // Listener para o botão Voltar
+    public void adicionarVoltarListener(ActionListener listener) {
+        voltarButton.addActionListener(listener);
     }
 }
