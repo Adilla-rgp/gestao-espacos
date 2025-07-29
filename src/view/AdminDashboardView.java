@@ -10,6 +10,7 @@ public class AdminDashboardView extends JFrame {
     private JLabel tituloLabel;
     private JButton cadastrarEspacosButton;
     private JButton minhasReservasButton;
+    private JButton verTodasReservasButton;
 
     private JLabel totalEspacosLabel;
     private JLabel reservasDiaLabel;
@@ -25,28 +26,31 @@ public class AdminDashboardView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // Título e botões
+        // Título
         tituloLabel = new JLabel("Admin: Bem-vindo!", SwingConstants.CENTER);
         tituloLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
 
+        // Botões
         cadastrarEspacosButton = new JButton("Cadastro de espaços");
         minhasReservasButton = new JButton("Minhas Reservas");
+        verTodasReservasButton = new JButton("Ver Todas as Reservas");
 
-        for (JButton botao : new JButton[]{cadastrarEspacosButton, minhasReservasButton}) {
+        for (JButton botao : new JButton[]{cadastrarEspacosButton, minhasReservasButton, verTodasReservasButton}) {
             botao.setFont(new Font("SansSerif", Font.BOLD, 14));
-            botao.setPreferredSize(new Dimension(160, 32));
+            botao.setPreferredSize(new Dimension(180, 32));
         }
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
         botoesPanel.add(cadastrarEspacosButton);
         botoesPanel.add(minhasReservasButton);
+        botoesPanel.add(verTodasReservasButton);
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 10, 40));
         topPanel.add(tituloLabel, BorderLayout.CENTER);
         topPanel.add(botoesPanel, BorderLayout.EAST);
 
-        // Cards personalizados
+        // Cards informativos
         totalEspacosLabel = new JLabel("—");
         reservasDiaLabel = new JLabel("—");
         maisUsadosLabel = new JLabel("—");
@@ -59,7 +63,7 @@ public class AdminDashboardView extends JFrame {
         cardPanel.add(criarCard("Reservas do Dia", reservasDiaLabel, new Color(210, 255, 210)));
         cardPanel.add(criarCard("Mais Utilizados", maisUsadosLabel, new Color(255, 225, 225)));
 
-        // Tabela estilizada
+        // Tabela de resumo
         tabelaResumo = new JTable();
         JScrollPane tabelaScroll = new JScrollPane(tabelaResumo);
         tabelaScroll.setBorder(BorderFactory.createTitledBorder("Resumo de Ocupação"));
@@ -71,97 +75,73 @@ public class AdminDashboardView extends JFrame {
         tabelaResumo.setFont(new Font("SansSerif", Font.PLAIN, 13));
         tabelaResumo.setRowHeight(26);
         tabelaResumo.setGridColor(Color.GRAY);
+        tabelaResumo.setDefaultRenderer(Object.class, new DefaultTableCellRenderer());
 
-        tabelaResumo.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                c.setBackground(row % 2 == 0 ? new Color(245, 250, 255) : Color.WHITE);
-                return c;
-            }
-        });
-
-        // Área de estatísticas detalhadas
-        estatisticasArea = new JTextArea("Nenhuma estatística disponível.");
+        // Estatísticas
+        estatisticasArea = new JTextArea(8, 50);
         estatisticasArea.setEditable(false);
-        estatisticasArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        estatisticasArea.setMargin(new Insets(10, 10, 10, 10));
-
+        estatisticasArea.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        estatisticasArea.setBorder(BorderFactory.createTitledBorder("Estatísticas Gerais"));
         JScrollPane estatisticasScroll = new JScrollPane(estatisticasArea);
-        estatisticasScroll.setBorder(BorderFactory.createTitledBorder("Estatísticas Detalhadas"));
-        estatisticasScroll.setPreferredSize(new Dimension(800, 150));
 
-        JPanel bottomPanel = new JPanel(new GridLayout(2, 1, 10, 10));
-        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 40, 20, 40));
-        bottomPanel.add(tabelaScroll);
-        bottomPanel.add(estatisticasScroll);
+        // Montagem geral
+        JPanel centroPanel = new JPanel();
+        centroPanel.setLayout(new BoxLayout(centroPanel, BoxLayout.Y_AXIS));
+        centroPanel.setBorder(BorderFactory.createEmptyBorder(10, 40, 20, 40));
+        centroPanel.add(cardPanel);
+        centroPanel.add(Box.createVerticalStrut(15));
+        centroPanel.add(tabelaScroll);
+        centroPanel.add(Box.createVerticalStrut(15));
+        centroPanel.add(estatisticasScroll);
 
-        // Monta a tela
         add(topPanel, BorderLayout.NORTH);
-        add(cardPanel, BorderLayout.CENTER);
-        add(bottomPanel, BorderLayout.SOUTH);
+        add(centroPanel, BorderLayout.CENTER);
     }
 
     private JPanel criarCard(String titulo, JLabel valorLabel, Color corFundo) {
         JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setLayout(new BorderLayout());
         card.setBackground(corFundo);
         card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(160, 160, 160), 1),
-                BorderFactory.createEmptyBorder(15, 10, 15, 10)
+                BorderFactory.createLineBorder(Color.GRAY, 1),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
         ));
 
-        JLabel tituloCard = new JLabel(titulo, SwingConstants.CENTER);
-        tituloCard.setFont(new Font("SansSerif", Font.BOLD, 16));
-        tituloCard.setForeground(new Color(60, 60, 60));
-        tituloCard.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel tituloLabel = new JLabel(titulo);
+        tituloLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        valorLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        valorLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        valorLabel.setFont(new Font("SansSerif", Font.PLAIN, 22));
-        valorLabel.setForeground(new Color(40, 40, 40));
-        valorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        card.add(tituloCard);
-        card.add(Box.createVerticalStrut(10));
-        card.add(valorLabel);
+        card.add(tituloLabel, BorderLayout.NORTH);
+        card.add(valorLabel, BorderLayout.CENTER);
         return card;
     }
 
-    // Getters e métodos públicos
-    public void setTitulo(String titulo) {
-        tituloLabel.setText("Admin: " + titulo);
-    }
+    // Getters de botões
+    public JButton getCadastrarEspacosButton() { return cadastrarEspacosButton; }
+    public JButton getMinhasReservasButton() { return minhasReservasButton; }
+    public JButton getVerTodasReservasButton() { return verTodasReservasButton; }
 
-    public void setTotalEspacos(String texto) {
-        totalEspacosLabel.setText(texto);
-    }
+    public JTable getTabelaResumo() { return tabelaResumo; }
+    public JTextArea getEstatisticasArea() { return estatisticasArea; }
 
-    public void setReservasDia(String texto) {
-        reservasDiaLabel.setText(texto);
-    }
+    // Métodos para atualizar dados
+    public void setTotalEspacos(String texto) { totalEspacosLabel.setText(texto); }
+    public void setReservasDia(String texto) { reservasDiaLabel.setText(texto); }
+    public void setMaisUsados(String texto) { maisUsadosLabel.setText(texto); }
 
-    public void setMaisUtilizados(String texto) {
-        maisUsadosLabel.setText(texto);
-    }
-
-    public void setEstatisticas(String texto) {
-        estatisticasArea.setText(texto);
-    }
-
-    public void setTabelaResumoModel(DefaultTableModel model) {
-        tabelaResumo.setModel(model);
-    }
-
-    public void adicionarCadastrarEspacosButtonListener(ActionListener listener) {
+    public void adicionarCadastrarEspacosListener(ActionListener listener) {
         cadastrarEspacosButton.addActionListener(listener);
     }
 
     public void adicionarMinhasReservasListener(ActionListener listener) {
         minhasReservasButton.addActionListener(listener);
     }
-
-    public void mostrarMensagem(String msg) {
-        JOptionPane.showMessageDialog(this, msg);
+    
+    public void adicionarCadastrarEspacosButtonListener(ActionListener listener) {
+    cadastrarEspacosButton.addActionListener(listener);
+    }
+    public void adicionarVerTodasReservasListener(ActionListener listener) {
+        verTodasReservasButton.addActionListener(listener);
     }
 }
