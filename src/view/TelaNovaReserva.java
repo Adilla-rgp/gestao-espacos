@@ -11,6 +11,7 @@ public class TelaNovaReserva extends JFrame {
     private JComboBox<String> comboPredio;
     private JComboBox<String> comboSala;
     private JComboBox<String> comboHorario;
+    private JTextField txtData; // campo de data adicionado
     private JButton btnConfirmar;
     private JButton btnVoltar;
 
@@ -45,6 +46,15 @@ public class TelaNovaReserva extends JFrame {
         comboSala.setFont(fonteCampo);
         comboSala.setMaximumSize(new Dimension(400, 30));
         comboSala.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Campo de Data adicionado
+        JLabel lblData = new JLabel("Selecione a Data:");
+        lblData.setFont(fonteLabel);
+        lblData.setAlignmentX(Component.CENTER_ALIGNMENT);
+        txtData = new JTextField("dd/mm/aaaa");
+        txtData.setFont(fonteCampo);
+        txtData.setMaximumSize(new Dimension(400, 30));
+        txtData.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblHorario = new JLabel("Selecione o Horário:");
         lblHorario.setFont(fonteLabel);
@@ -88,6 +98,10 @@ public class TelaNovaReserva extends JFrame {
         add(Box.createVerticalStrut(8));
         add(comboSala);
         add(Box.createVerticalStrut(20));
+        add(lblData); // campo de data
+        add(Box.createVerticalStrut(8));
+        add(txtData);
+        add(Box.createVerticalStrut(20));
         add(lblHorario);
         add(Box.createVerticalStrut(8));
         add(comboHorario);
@@ -104,11 +118,13 @@ public class TelaNovaReserva extends JFrame {
                 String predio = (String) comboPredio.getSelectedItem();
                 String sala = (String) comboSala.getSelectedItem();
                 String horario = (String) comboHorario.getSelectedItem();
+                String data = txtData.getText();
 
                 JOptionPane.showMessageDialog(null,
                     "Reserva feita para:\n" +
                     "Prédio: " + predio + "\n" +
                     "Sala: " + sala + "\n" +
+                    "Data: " + data + "\n" +
                     "Horário: " + horario,
                     "Reserva Confirmada",
                     JOptionPane.INFORMATION_MESSAGE);
@@ -117,9 +133,10 @@ public class TelaNovaReserva extends JFrame {
                 DefaultTableModel model = new DefaultTableModel();
                 model.addColumn("Prédio");
                 model.addColumn("Sala");
+                model.addColumn("Data");
                 model.addColumn("Horário");
                 model.addColumn("Status");
-                model.addRow(new Object[] { predio, sala, horario, "Agendada" });
+                model.addRow(new Object[] { predio, sala, data, horario, "Agendada" });
 
                 dispose();
                 MinhasReservasView reservasView = new MinhasReservasView();
