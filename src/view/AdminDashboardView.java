@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 public class AdminDashboardView extends JFrame {
     private JLabel tituloLabel;
     private JButton cadastrarEspacosButton;
+    private JButton cadastrarEspacoIndividualButton; // Novo botão
     private JButton minhasReservasButton;
     private JButton verTodasReservasButton;
 
@@ -21,7 +22,7 @@ public class AdminDashboardView extends JFrame {
 
     public AdminDashboardView() {
         setTitle("Dashboard - Gestão de Espaços (Admin)");
-        setSize(900, 700);
+        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
@@ -31,17 +32,24 @@ public class AdminDashboardView extends JFrame {
         tituloLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
 
         // Botões
-        cadastrarEspacosButton = new JButton("Cadastro de espaços");
+        cadastrarEspacosButton = new JButton("Cadastro de Espaços");
+        cadastrarEspacoIndividualButton = new JButton("Cadastrar Espaço"); // Instanciando novo botão
         minhasReservasButton = new JButton("Minhas Reservas");
         verTodasReservasButton = new JButton("Ver Todas as Reservas");
 
-        for (JButton botao : new JButton[]{cadastrarEspacosButton, minhasReservasButton, verTodasReservasButton}) {
+        for (JButton botao : new JButton[]{
+                cadastrarEspacosButton,
+                cadastrarEspacoIndividualButton,
+                minhasReservasButton,
+                verTodasReservasButton
+        }) {
             botao.setFont(new Font("SansSerif", Font.BOLD, 14));
             botao.setPreferredSize(new Dimension(180, 32));
         }
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
         botoesPanel.add(cadastrarEspacosButton);
+        botoesPanel.add(cadastrarEspacoIndividualButton); // Adicionando novo botão
         botoesPanel.add(minhasReservasButton);
         botoesPanel.add(verTodasReservasButton);
 
@@ -119,28 +127,31 @@ public class AdminDashboardView extends JFrame {
 
     // Getters de botões
     public JButton getCadastrarEspacosButton() { return cadastrarEspacosButton; }
+    public JButton getCadastrarEspacoIndividualButton() { return cadastrarEspacoIndividualButton; } // Getter do novo botão
     public JButton getMinhasReservasButton() { return minhasReservasButton; }
     public JButton getVerTodasReservasButton() { return verTodasReservasButton; }
 
     public JTable getTabelaResumo() { return tabelaResumo; }
     public JTextArea getEstatisticasArea() { return estatisticasArea; }
 
-    // Métodos para atualizar dados
+    // Atualizadores de dados
     public void setTotalEspacos(String texto) { totalEspacosLabel.setText(texto); }
     public void setReservasDia(String texto) { reservasDiaLabel.setText(texto); }
     public void setMaisUsados(String texto) { maisUsadosLabel.setText(texto); }
 
+    // Listeners
     public void adicionarCadastrarEspacosListener(ActionListener listener) {
         cadastrarEspacosButton.addActionListener(listener);
+    }
+
+    public void adicionarCadastrarEspacoIndividualListener(ActionListener listener) {
+        cadastrarEspacoIndividualButton.addActionListener(listener);
     }
 
     public void adicionarMinhasReservasListener(ActionListener listener) {
         minhasReservasButton.addActionListener(listener);
     }
-    
-    public void adicionarCadastrarEspacosButtonListener(ActionListener listener) {
-    cadastrarEspacosButton.addActionListener(listener);
-    }
+
     public void adicionarVerTodasReservasListener(ActionListener listener) {
         verTodasReservasButton.addActionListener(listener);
     }
