@@ -7,163 +7,142 @@ import java.awt.event.ActionListener;
 public class CadastroEspacoView extends JFrame {
     private JTextField nomeField;
     private JComboBox<String> tipoCombo;
-    private JTextField capacidadeField;
-    private JTextField localizacaoField;
+    private JComboBox<String> capacidadeCombo;
+    private JComboBox<String> unidadeCombo;
+    private JComboBox<String> localizacaoCombo;
     private JTextArea descricaoArea;
     private JButton salvarButton;
     private JButton cancelarButton;
     private JButton limparButton;
-
-    // Painel de campos dinâmicos
-    private JPanel painelExtras;
-
-    // Campos extras por tipo
-    private JCheckBox projetorCheck, arCondicionadoCheck;
-    private JTextField tipoLabField, equipamentosLabField;
-    private JCheckBox sistemaSomCheck, palcoCheck;
-    private JTextField capacidadeEspecialField;
-    private JTextField tipoEsporteField;
-    private JCheckBox cobertaCheck;
-    private JCheckBox mesaConferenciaCheck, tvProjetorCheck;
+    private JButton continuarButton;
 
     public CadastroEspacoView() {
         setTitle("Cadastro de Espaço");
-        setSize(500, 600);
+        setSize(550, 550);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        Font fontePadrao = new Font("SansSerif", Font.PLAIN, 14);
+        UIManager.put("Label.font", fontePadrao);
+        UIManager.put("Button.font", fontePadrao);
+        UIManager.put("ComboBox.font", fontePadrao);
+        UIManager.put("TextField.font", fontePadrao);
+        UIManager.put("TextArea.font", fontePadrao);
+
         JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(new Color(245, 248, 250));
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
-        // Campos comuns
         nomeField = new JTextField(20);
-        capacidadeField = new JTextField(5);
-        localizacaoField = new JTextField(20);
-        descricaoArea = new JTextArea(3, 20);
-
         tipoCombo = new JComboBox<>(new String[]{
             "Sala de Aula", "Laboratório", "Auditório", "Quadra", "Sala de Reunião"
         });
 
-        tipoCombo.addActionListener(e -> atualizarCamposExtras());
+        capacidadeCombo = new JComboBox<>(new String[]{
+            "1-5 pessoas", "6-20 pessoas", "21-50 pessoas", "51-100 pessoas",
+            "101-150 pessoas", "151-200 pessoas", "201-300 pessoas"
+        });
 
+        unidadeCombo = new JComboBox<>(new String[]{
+            "Campus Centro", "Campus Sul", "Campus Norte", "Unidade Remota"
+        });
+
+        localizacaoCombo = new JComboBox<>(new String[]{
+            "Bloco A", "Bloco B", "Bloco C", "Prédio Principal", "Anexo 1", "Outro"
+        });
+
+        descricaoArea = new JTextArea(3, 20);
+        descricaoArea.setLineWrap(true);
+        descricaoArea.setWrapStyleWord(true);
+        JScrollPane descricaoScroll = new JScrollPane(descricaoArea);
+        descricaoScroll.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+
+        mainPanel.add(titulo("Informações Gerais"));
         mainPanel.add(criarLinha("Nome:", nomeField));
-        mainPanel.add(criarLinha("Tipo:", tipoCombo));
-        mainPanel.add(criarLinha("Capacidade:", capacidadeField));
-        mainPanel.add(criarLinha("Localização:", localizacaoField));
-        mainPanel.add(new JLabel("Descrição:"));
-        mainPanel.add(new JScrollPane(descricaoArea));
+        mainPanel.add(criarLinha("Tipo de Espaço:", tipoCombo));
+        mainPanel.add(criarLinha("Capacidade:", capacidadeCombo));
 
         mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(new JLabel("Campos específicos:"));
+        mainPanel.add(titulo("Localização"));
+        mainPanel.add(criarLinha("Unidade Física:", unidadeCombo));
+        mainPanel.add(criarLinha("Localização:", localizacaoCombo));
 
-        // Painel para campos específicos por tipo
-        painelExtras = new JPanel();
-        painelExtras.setLayout(new BoxLayout(painelExtras, BoxLayout.Y_AXIS));
-        mainPanel.add(painelExtras);
-
-        // Botões
-        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        salvarButton = new JButton("Salvar");
-        cancelarButton = new JButton("Cancelar");
-        limparButton = new JButton("Limpar");
-
-        botoesPanel.add(salvarButton);
-        botoesPanel.add(cancelarButton);
-        botoesPanel.add(limparButton);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(titulo("Descrição"));
+        mainPanel.add(descricaoScroll);
 
         mainPanel.add(Box.createVerticalStrut(20));
-        mainPanel.add(botoesPanel);
+        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        botoesPanel.setBackground(new Color(245, 248, 250));
 
+        salvarButton = new JButton("Salvar");
+        continuarButton = new JButton("Continuar Cadastro");
+        limparButton = new JButton("Limpar");
+        cancelarButton = new JButton("Cancelar");
+
+        botoesPanel.add(salvarButton);
+        botoesPanel.add(continuarButton);
+        botoesPanel.add(limparButton);
+        botoesPanel.add(cancelarButton);
+
+        mainPanel.add(botoesPanel);
         add(mainPanel);
-        atualizarCamposExtras(); // inicia com campos da primeira opção
     }
 
-    private void atualizarCamposExtras() {
-        painelExtras.removeAll();
-        String tipo = (String) tipoCombo.getSelectedItem();
-
-        switch (tipo) {
-            case "Sala de Aula":
-                projetorCheck = new JCheckBox("Projetor");
-                arCondicionadoCheck = new JCheckBox("Ar condicionado");
-                painelExtras.add(projetorCheck);
-                painelExtras.add(arCondicionadoCheck);
-                break;
-            case "Laboratório":
-                tipoLabField = new JTextField(20);
-                equipamentosLabField = new JTextField(20);
-                painelExtras.add(criarLinha("Tipo de laboratório:", tipoLabField));
-                painelExtras.add(criarLinha("Equipamentos especiais:", equipamentosLabField));
-                break;
-            case "Auditório":
-                sistemaSomCheck = new JCheckBox("Sistema de som");
-                palcoCheck = new JCheckBox("Palco");
-                capacidadeEspecialField = new JTextField(5);
-                painelExtras.add(sistemaSomCheck);
-                painelExtras.add(palcoCheck);
-                painelExtras.add(criarLinha("Capacidade especial:", capacidadeEspecialField));
-                break;
-            case "Quadra":
-                tipoEsporteField = new JTextField(20);
-                cobertaCheck = new JCheckBox("Coberta");
-                painelExtras.add(criarLinha("Tipo de esporte:", tipoEsporteField));
-                painelExtras.add(cobertaCheck);
-                break;
-            case "Sala de Reunião":
-                mesaConferenciaCheck = new JCheckBox("Mesa de conferência");
-                tvProjetorCheck = new JCheckBox("TV/Projetor");
-                painelExtras.add(mesaConferenciaCheck);
-                painelExtras.add(tvProjetorCheck);
-                break;
-        }
-
-        painelExtras.revalidate();
-        painelExtras.repaint();
+    private JLabel titulo(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("SansSerif", Font.BOLD, 16));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        label.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+        return label;
     }
 
     private JPanel criarLinha(String labelTexto, JComponent campo) {
         JPanel linha = new JPanel(new BorderLayout(5, 5));
-        linha.add(new JLabel(labelTexto), BorderLayout.WEST);
+        linha.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        linha.setBackground(new Color(245, 248, 250));
+        JLabel label = new JLabel(labelTexto);
+        linha.add(label, BorderLayout.WEST);
         linha.add(campo, BorderLayout.CENTER);
         return linha;
     }
 
-    // Getters comuns
+    // Getters
     public String getNome() { return nomeField.getText(); }
     public String getTipo() { return (String) tipoCombo.getSelectedItem(); }
-    public String getCapacidade() { return capacidadeField.getText(); }
-    public String getLocalizacao() { return localizacaoField.getText(); }
+    public String getCapacidade() { return (String) capacidadeCombo.getSelectedItem(); }
+    public String getUnidade() { return (String) unidadeCombo.getSelectedItem(); }
+    public String getLocalizacao() { return (String) localizacaoCombo.getSelectedItem(); }
     public String getDescricao() { return descricaoArea.getText(); }
-
-    // Getters campos específicos (exemplo)
-    public boolean isProjetor() { return projetorCheck != null && projetorCheck.isSelected(); }
-    public boolean isArCondicionado() { return arCondicionadoCheck != null && arCondicionadoCheck.isSelected(); }
-    public String getTipoLaboratorio() { return tipoLabField != null ? tipoLabField.getText() : ""; }
 
     public JButton getSalvarButton() { return salvarButton; }
     public JButton getCancelarButton() { return cancelarButton; }
     public JButton getLimparButton() { return limparButton; }
+    public JButton getContinuarButton() { return continuarButton; }
 
     public void limparCampos() {
         nomeField.setText("");
-        capacidadeField.setText("");
-        localizacaoField.setText("");
+        capacidadeCombo.setSelectedIndex(0);
+        unidadeCombo.setSelectedIndex(0);
+        localizacaoCombo.setSelectedIndex(0);
         descricaoArea.setText("");
         tipoCombo.setSelectedIndex(0);
-        atualizarCamposExtras();
     }
 
-    public void adicionarSalvarButtonListener(ActionListener listener){
+    public void adicionarSalvarButtonListener(ActionListener listener) {
         salvarButton.addActionListener(listener);
     }
 
-    public void adicionarCancelarButtonListener(ActionListener listener){
+    public void adicionarCancelarButtonListener(ActionListener listener) {
         cancelarButton.addActionListener(listener);
     }
 
-    public void adicionarLimparButtonListener(ActionListener listener){
+    public void adicionarLimparButtonListener(ActionListener listener) {
         limparButton.addActionListener(listener);
+    }
+
+    public void adicionarContinuarButtonListener(ActionListener listener) {
+        continuarButton.addActionListener(listener);
     }
 }
