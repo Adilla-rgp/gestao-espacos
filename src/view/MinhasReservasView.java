@@ -3,11 +3,13 @@ package view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class MinhasReservasView extends JFrame {
     private JTable tabela;
     private JButton cancelarButton;
     private JButton detalhesButton;
+    private JButton voltarButton;
 
     public MinhasReservasView() {
         setTitle("Minhas Reservas");
@@ -29,12 +31,13 @@ public class MinhasReservasView extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(tabela);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Reservas Agendadas"));
-        scrollPane.getViewport().setBackground(Color.WHITE); // mantém fundo da tabela branco
+        scrollPane.getViewport().setBackground(Color.WHITE);
         scrollPane.setBackground(fundo);
 
         // Botões estilizados
         cancelarButton = new JButton("Cancelar Reserva");
         detalhesButton = new JButton("Confirmar Reserva");
+        voltarButton = new JButton("Voltar");
 
         Font fonteBotao = new Font("SansSerif", Font.BOLD, 14);
         Dimension tamanhoBotao = new Dimension(180, 35);
@@ -51,18 +54,23 @@ public class MinhasReservasView extends JFrame {
         detalhesButton.setFocusPainted(false);
         detalhesButton.setPreferredSize(tamanhoBotao);
 
+        voltarButton.setFont(fonteBotao);
+        voltarButton.setBackground(new Color(158, 158, 158));
+        voltarButton.setForeground(Color.WHITE);
+        voltarButton.setFocusPainted(false);
+        voltarButton.setPreferredSize(tamanhoBotao);
+
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 10));
         botoesPanel.setBackground(fundo);
         botoesPanel.add(cancelarButton);
         botoesPanel.add(detalhesButton);
+        botoesPanel.add(voltarButton); // botão Voltar adicionado
 
-        // Margem lateral mais confortável
         JPanel margemPanel = new JPanel(new BorderLayout());
         margemPanel.setBackground(fundo);
         margemPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
         margemPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // Composição final
         add(margemPanel, BorderLayout.CENTER);
         add(botoesPanel, BorderLayout.SOUTH);
     }
@@ -79,7 +87,15 @@ public class MinhasReservasView extends JFrame {
         return detalhesButton;
     }
 
+    public JButton getVoltarButton() {
+        return voltarButton;
+    }
+
     public void setTabelaModel(DefaultTableModel model) {
         tabela.setModel(model);
+    }
+
+    public void adicionarVoltarListener(ActionListener listener) {
+        voltarButton.addActionListener(listener);
     }
 }
