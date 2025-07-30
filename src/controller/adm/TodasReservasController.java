@@ -30,7 +30,6 @@ public class TodasReservasController {
         );  
         try{
             for (Reserva r : listaDeReservas) {
-                System.out.println(r.getNome());
                 Usuario user = UsuarioDAO.buscarPorID(r.getIdUsuario());
                 model.addRow(new Object[] {
                     r.getId(),

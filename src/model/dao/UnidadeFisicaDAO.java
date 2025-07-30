@@ -83,6 +83,27 @@ public class UnidadeFisicaDAO {
         return null;
     }
 
+    // READ: busca ID pelo nome
+    public static Integer buscarIdPorNome(String nomeUnidade) {
+        String sql = "SELECT id_unidade FROM unidade_fisica WHERE nome = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeUnidade);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_unidade");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar ID da unidade física: " + e.getMessage());
+        }
+        return null; // Retorna null se não encontrar ou ocorrer erro
+    }
+
+
+
     // READ: lista todas as unidades
     public static List<UnidadeFisica> listarTodas() {
         List<UnidadeFisica> lista = new ArrayList<>();
@@ -138,6 +159,7 @@ public class UnidadeFisicaDAO {
 
     // mapeando ResultSet para o tipo correto
     private static UnidadeFisica mapearUnidade(ResultSet rs) throws SQLException {
+
         String tipo = rs.getString("tipo");
         String nome = rs.getString("nome");
         String descricao = rs.getString("descricao");
@@ -150,6 +172,28 @@ public class UnidadeFisicaDAO {
                 return new NucleoEsportivo(idUnidade, nome, descricao);  
             default:
                 throw new SQLException("Tipo de unidade física desconhecido: " + tipo);
+        }
+    }
+
+    public static int buscarIdUnidadePorNome(String nomeUnidadeFisica) throws SQLException {
+        String sql = "SELECT id_unidade FROM unidade_fisica WHERE nome = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeUnidadeFisica);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id_unidade");
+            } else {
+                System.out.println("Unidade física não encontrada com o nome: " + nomeUnidadeFisica);
+                return -1; // Retorna -1 quando não encontra a unidade
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar ID da unidade física por nome: " + e.getMessage());
+            throw e;
         }
     }
 }

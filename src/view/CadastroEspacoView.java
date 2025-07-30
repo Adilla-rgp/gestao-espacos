@@ -3,15 +3,14 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class CadastroEspacoView extends JFrame {
     private JTextField nomeField;
     private JComboBox<String> tipoCombo;
     private JComboBox<String> capacidadeCombo;
     private JComboBox<String> unidadeCombo;
-    private JComboBox<String> localizacaoCombo;
     private JTextArea descricaoArea;
-    private JButton salvarButton;
     private JButton cancelarButton;
     private JButton limparButton;
     private JButton continuarButton;
@@ -36,21 +35,15 @@ public class CadastroEspacoView extends JFrame {
 
         nomeField = new JTextField(20);
         tipoCombo = new JComboBox<>(new String[]{
-            "Sala de Aula", "Laboratório", "Auditório", "Quadra", "Sala de Reunião"
+            "Sala", "Laboratório", "Auditório", "Quadra", "Sala de Reunião", "Campo"
         });
 
         capacidadeCombo = new JComboBox<>(new String[]{
-            "1-5 pessoas", "6-20 pessoas", "21-50 pessoas", "51-100 pessoas",
-            "101-150 pessoas", "151-200 pessoas", "201-300 pessoas"
+            "5", "20", "50", "100",
+            "150", "200", "300"
         });
 
-        unidadeCombo = new JComboBox<>(new String[]{
-            "Campus Centro", "Campus Sul", "Campus Norte", "Unidade Remota"
-        });
-
-        localizacaoCombo = new JComboBox<>(new String[]{
-            "Bloco A", "Bloco B", "Bloco C", "Prédio Principal", "Anexo 1", "Outro"
-        });
+        unidadeCombo = new JComboBox<>(new String[]{});
 
         descricaoArea = new JTextArea(3, 20);
         descricaoArea.setLineWrap(true);
@@ -66,7 +59,6 @@ public class CadastroEspacoView extends JFrame {
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(titulo("Localização"));
         mainPanel.add(criarLinha("Unidade Física:", unidadeCombo));
-        mainPanel.add(criarLinha("Localização:", localizacaoCombo));
 
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(titulo("Descrição"));
@@ -76,12 +68,10 @@ public class CadastroEspacoView extends JFrame {
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         botoesPanel.setBackground(new Color(245, 248, 250));
 
-        salvarButton = new JButton("Salvar");
         continuarButton = new JButton("Continuar Cadastro");
         limparButton = new JButton("Limpar");
         cancelarButton = new JButton("Cancelar");
 
-        botoesPanel.add(salvarButton);
         botoesPanel.add(continuarButton);
         botoesPanel.add(limparButton);
         botoesPanel.add(cancelarButton);
@@ -113,10 +103,8 @@ public class CadastroEspacoView extends JFrame {
     public String getTipo() { return (String) tipoCombo.getSelectedItem(); }
     public String getCapacidade() { return (String) capacidadeCombo.getSelectedItem(); }
     public String getUnidade() { return (String) unidadeCombo.getSelectedItem(); }
-    public String getLocalizacao() { return (String) localizacaoCombo.getSelectedItem(); }
     public String getDescricao() { return descricaoArea.getText(); }
 
-    public JButton getSalvarButton() { return salvarButton; }
     public JButton getCancelarButton() { return cancelarButton; }
     public JButton getLimparButton() { return limparButton; }
     public JButton getContinuarButton() { return continuarButton; }
@@ -125,14 +113,13 @@ public class CadastroEspacoView extends JFrame {
         nomeField.setText("");
         capacidadeCombo.setSelectedIndex(0);
         unidadeCombo.setSelectedIndex(0);
-        localizacaoCombo.setSelectedIndex(0);
         descricaoArea.setText("");
         tipoCombo.setSelectedIndex(0);
     }
 
-    public void adicionarSalvarButtonListener(ActionListener listener) {
-        salvarButton.addActionListener(listener);
-    }
+    public JComboBox<String> getComboUnidade() {
+        return unidadeCombo;
+    }   
 
     public void adicionarCancelarButtonListener(ActionListener listener) {
         cancelarButton.addActionListener(listener);
@@ -144,5 +131,16 @@ public class CadastroEspacoView extends JFrame {
 
     public void adicionarContinuarButtonListener(ActionListener listener) {
         continuarButton.addActionListener(listener);
+    }
+
+    public void atualizarComboUnidade(List<String> unidades) {
+        unidadeCombo.removeAllItems();
+        for (String unidade : unidades) {
+            unidadeCombo.addItem(unidade);
+        }
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem);
     }
 }

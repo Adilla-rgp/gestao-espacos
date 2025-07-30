@@ -1,5 +1,5 @@
 package model.entities.locais;
-import model.enums.TipoEspaco;
+import model.enums.*;
 import model.enums.TipoLaboratorio;
 import java.util.Set;
 
@@ -11,7 +11,7 @@ public class Laboratorio extends Local {
     // Construtor para novos objetos
     public Laboratorio(String nome, String descricao, String status, int capacidade, int quantEquipamentos, TipoLaboratorio tipoDeLaboratorio){
         super(nome, descricao, status, capacidade);
-        setTipoDeLaboratorio(tipoLaboratorio);
+        setTipoDeLaboratorio(tipoDeLaboratorio);
         setQuantEquipamentos(quantEquipamentos);
     }
 

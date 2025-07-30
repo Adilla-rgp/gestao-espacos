@@ -9,7 +9,7 @@ public class Quadra extends Local {
     // Método construtor para novos objetos
     public Quadra(String nome,String descricao, String status, int capacidade, TipoQuadra tipoDeQuadra, boolean ehCoberta, boolean possuiIluminacao){
         super(nome, descricao, status, capacidade);
-        this.tipoQuadra = tipoQuadra;
+        this.tipoQuadra = tipoDeQuadra;
         this.ehCoberta = ehCoberta;
         this.possuiIluminacao = possuiIluminacao;
     }

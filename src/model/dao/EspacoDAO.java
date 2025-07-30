@@ -12,7 +12,7 @@ import java.util.List;
 public class EspacoDAO {
 
     // CREATE: insere espaço e dados da subclasse
-    public int inserirEspaco(Local local, int idUnidade) throws SQLException {
+    public static int inserirEspaco(Local local, int idUnidade) throws SQLException {
 
         String sqlInserirEspaco = "INSERT INTO espaco (id_unidade, nome, descricao, status, capacidade) VALUES (?, ?, ?, ?, ?)";
         String sqlVerificar = "SELECT COUNT(*) FROM espaco WHERE nome = ?"; // conta quantos espacos possuem o mesmo nome
@@ -75,7 +75,7 @@ public class EspacoDAO {
     }
 
     // CREATE: insere os dados da subclasse em sua tabela específica
-    private void inserirDadosSubclasse(Connection conn, int idEspaco, Local local) throws SQLException {
+    private static void inserirDadosSubclasse(Connection conn, int idEspaco, Local local) throws SQLException {
         String sqlSubclasse = null;
         PreparedStatement stmtSubclasse = null;
 
@@ -271,7 +271,7 @@ public class EspacoDAO {
     }
 
     // READ: lista os locais pela unidade
-    public List<Local> listarLocaisPorUnidade(int idUnidade) {
+    public static List<Local> listarLocaisPorUnidade(int idUnidade) {
         String sql = "SELECT * FROM espaco WHERE id_unidade = ?";
         List<Local> locais = new ArrayList<>();
 
@@ -394,6 +394,27 @@ public class EspacoDAO {
             stmt.executeUpdate();
             System.out.println("Espaço removido ID: " + idEspaco);
         }
+    }
+
+    public static Local buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM espaco WHERE nome = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int idEspaco = rs.getInt("id_espaco");
+                String descricao = rs.getString("descricao");
+                String status = rs.getString("status");
+                int capacidade = rs.getInt("capacidade");
+
+                return carregarSubclasse(conn, idEspaco, nome, descricao, status, capacidade);
+            }
+        }
+        return null;
     }
 
 }

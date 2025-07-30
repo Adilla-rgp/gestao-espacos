@@ -150,7 +150,7 @@ public class ReservaDAO {
     }
 
     // READ: Lista reservas de um local específico em um dia específico
-    public List<Reserva> listarReservasPorDiaELocal(int idEspaco, LocalDate data) {
+    public static List<Reserva> listarReservasPorDiaELocal(int idEspaco, LocalDate data) {
 
         String sql = "SELECT * FROM reserva WHERE id_espaco = ? AND data = ?";
         List<Reserva> lista = new ArrayList<>();
@@ -260,8 +260,8 @@ public class ReservaDAO {
     // método que mapea os horários do banco para o enum Horario
     private static Horario mapearHorario(ResultSet rs) throws SQLException {
         // lê como java.sql.Time e converte para LocalTime
-        LocalTime inicio = rs.getTime("horario_inicio").toLocalTime();
-        LocalTime fim = rs.getTime("horario_fim").toLocalTime();
+        LocalTime inicio = LocalTime.parse(rs.getString("horario_inicio"));
+        LocalTime fim = LocalTime.parse(rs.getString("horario_fim"));
 
         // compara com os valores do Enum Horario
         for (Horario h : Horario.values()) {

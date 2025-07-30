@@ -31,6 +31,15 @@ public class TelaNovaReserva extends JFrame {
         Font fonteLabel = new Font("SansSerif", Font.BOLD, 18);
         Font fonteCampo = new Font("SansSerif", Font.PLAIN, 14);
 
+        // Campo de Data adicionado (colocado no topo)
+        JLabel lblData = new JLabel("Selecione a Data:");
+        lblData.setFont(fonteLabel);
+        lblData.setAlignmentX(Component.CENTER_ALIGNMENT);
+        txtData = new JTextField("dd/mm/aaaa");
+        txtData.setFont(fonteCampo);
+        txtData.setMaximumSize(new Dimension(400, 30));
+        txtData.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         // Labels e Combos
         JLabel lblPredio = new JLabel("Selecione o Prédio:");
         lblPredio.setFont(fonteLabel);
@@ -47,15 +56,6 @@ public class TelaNovaReserva extends JFrame {
         comboSala.setFont(fonteCampo);
         comboSala.setMaximumSize(new Dimension(400, 30));
         comboSala.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Campo de Data adicionado
-        JLabel lblData = new JLabel("Selecione a Data:");
-        lblData.setFont(fonteLabel);
-        lblData.setAlignmentX(Component.CENTER_ALIGNMENT);
-        txtData = new JTextField("dd/mm/aaaa");
-        txtData.setFont(fonteCampo);
-        txtData.setMaximumSize(new Dimension(400, 30));
-        txtData.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblHorario = new JLabel("Selecione o Horário:");
         lblHorario.setFont(fonteLabel);
@@ -83,8 +83,12 @@ public class TelaNovaReserva extends JFrame {
         btnVoltar.setMaximumSize(new Dimension(200, 35));
         btnVoltar.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Adiciona os componentes à janela
+        // Adiciona os componentes à janela na nova ordem
         add(Box.createVerticalStrut(40));
+        add(lblData);
+        add(Box.createVerticalStrut(8));
+        add(txtData);
+        add(Box.createVerticalStrut(20));
         add(lblPredio);
         add(Box.createVerticalStrut(8));
         add(comboUnidade);
@@ -92,10 +96,6 @@ public class TelaNovaReserva extends JFrame {
         add(lblSala);
         add(Box.createVerticalStrut(8));
         add(comboSala);
-        add(Box.createVerticalStrut(20));
-        add(lblData); // campo de data
-        add(Box.createVerticalStrut(8));
-        add(txtData);
         add(Box.createVerticalStrut(20));
         add(lblHorario);
         add(Box.createVerticalStrut(8));
@@ -105,43 +105,8 @@ public class TelaNovaReserva extends JFrame {
         add(Box.createVerticalStrut(10));
         add(btnVoltar);
         add(Box.createVerticalGlue());
-
-        // Evento do botão confirmar
-/*      btnConfirmar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String predio = (String) comboUnidade.getSelectedItem();
-                String sala = (String) comboSala.getSelectedItem();
-                String horario = (String) comboHorario.getSelectedItem();
-                String data = txtData.getText();
-
-                JOptionPane.showMessageDialog(null,
-                    "Reserva feita para:\n" +
-                    "Prédio: " + predio + "\n" +
-                    "Sala: " + sala + "\n" +
-                    "Data: " + data + "\n" +
-                    "Horário: " + horario,
-                    "Reserva Confirmada",
-                    JOptionPane.INFORMATION_MESSAGE);
-
-                // Tabela com a reserva confirmada
-                DefaultTableModel model = new DefaultTableModel();
-                model.addColumn("Prédio");
-                model.addColumn("Sala");
-                model.addColumn("Data");
-                model.addColumn("Horário");
-                model.addColumn("Status");
-                model.addRow(new Object[] { predio, sala, data, horario, "Agendada" });
-
-                dispose();
-                MinhasReservasView reservasView = new MinhasReservasView();
-                reservasView.setTabelaModel(model);
-                reservasView.setVisible(true);
-            }
-        });
-
-     */
     }
+
 
     public void adicionarVoltarBottonListener(ActionListener listener){
         btnVoltar.addActionListener(listener);
@@ -159,6 +124,10 @@ public class TelaNovaReserva extends JFrame {
         return comboSala;
     }
 
+    public String getUnidadeSelecionada(){
+        return (String) comboUnidade.getSelectedItem();
+    }
+
     public void atualizarComboUnidade(List<String> unidades) {
         comboUnidade.removeAllItems();
         for (String unidade : unidades) {
@@ -172,4 +141,27 @@ public class TelaNovaReserva extends JFrame {
             comboSala.addItem(sala);
         }
     }
+
+    public void atualizarComboHorario(List<String> horarios) {
+        comboHorario.removeAllItems();
+        for (String h : horarios) {
+            comboHorario.addItem(h);
+        }
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
+    }
+
+    public String getDataSelecionada() {
+        return txtData.getText().trim();
+    }
+
+    public String getSalaSelecionada() {
+        return (String) comboSala.getSelectedItem();
+    }
+
+    public JComboBox<String> getComboHorario() {
+        return comboHorario;
+    }   
 }

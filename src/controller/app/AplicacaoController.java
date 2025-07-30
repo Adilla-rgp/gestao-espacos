@@ -8,11 +8,13 @@ import controller.autenticacao.*;
 import controller.dashboard.*;
 import controller.espaco.*;
 import controller.usuario.*;
+import model.dto.EspacoDTO;
 import model.entities.usuario.Usuario;
 import view.*;
 
 public class AplicacaoController {
     private Usuario user;
+    private EspacoDTO espacoAtual;
 
     private LoginView telaLoginView;
     private CadastroView telaCadastroView;
@@ -23,6 +25,7 @@ public class AplicacaoController {
     private AdminDashboardView telaADMDashboard;
     private CadastroUnidadeFisicaView telaCadastraUnidFisica;
     private TodasReservasView telaTodasReservas;
+    private AtributosEspacoView telaAtributosEspacoView;
 
     private LoginController loginController;
     private CadastroController cadastroController;
@@ -33,27 +36,30 @@ public class AplicacaoController {
     private AdminDashboardController ADMDashboardController;
     private CadastrarUnidadeFisicaController cadastrarUnidadeFisicaController;
     private TodasReservasController todasReservasController;
+    private AtributosEspacoController atributosEspacoController;
 
     public AplicacaoController() {
         this.telaLoginView = new LoginView();
         this.telaCadastroView = new CadastroView();
         this.telaDashboardView = new DashboardView();
-        this.telaCadastroEspacoView = new CadastroEspacoView();
         this.telaMinhasReservas = new ReservasView();
         this.telaNovaReserva = new TelaNovaReserva();
         this.telaADMDashboard = new AdminDashboardView();
         this.telaCadastraUnidFisica = new CadastroUnidadeFisicaView();
         this.telaTodasReservas = new TodasReservasView();
+        this.telaCadastroEspacoView = new CadastroEspacoView();
+        this.telaAtributosEspacoView = new AtributosEspacoView();
 
         this.loginController = new LoginController(telaLoginView, this);
         this.cadastroController = new CadastroController(telaCadastroView, this);
         this.dashboardController = new DashboardController(telaDashboardView, this);
-        this.cadastroEspacoController = new CadastrarEspacoController(telaCadastroEspacoView, this);
         this.minhasReservasController = new MinhasReservasController(telaMinhasReservas, this);
         this.novaReservaController = new NovaReservaController(telaNovaReserva, this);
         this.ADMDashboardController = new AdminDashboardController(telaADMDashboard, this);
         this.cadastrarUnidadeFisicaController = new CadastrarUnidadeFisicaController(telaCadastraUnidFisica, this);
         this.todasReservasController = new TodasReservasController(telaTodasReservas, this);
+        this.cadastroEspacoController = new CadastrarEspacoController(telaCadastroEspacoView, this);
+        this.atributosEspacoController = new AtributosEspacoController(telaAtributosEspacoView, this);
 
         mostrarTelaLogin();
     }
@@ -109,6 +115,11 @@ public class AplicacaoController {
         esconderTodasTelas();
         telaTodasReservas.setVisible(true);
     }
+
+    public void mostrarTelaAtributosEspaco(){
+        esconderTodasTelas();
+        telaAtributosEspacoView.setVisible(true);
+    }
     
     public void esconderTodasTelas() {
         telaLoginView.setVisible(false);
@@ -120,6 +131,7 @@ public class AplicacaoController {
         telaADMDashboard.setVisible(false);
         telaCadastraUnidFisica.setVisible(false);
         telaTodasReservas.setVisible(false);
+        telaAtributosEspacoView.setVisible(false);
     }
 
     public Usuario getUsuario(){
@@ -134,5 +146,32 @@ public class AplicacaoController {
 
     public void atualizarTabelaReservasUsuario(){
         minhasReservasController.atualizarTabelaReservasUsuario();
+    }
+
+    public void receberDadosBasicos(EspacoDTO espaco) {
+        this.espacoAtual = espaco;
+        telaAtributosEspacoView.configurarPorTipo(espaco.getTipo());
+        telaAtributosEspacoView.setVisible(true);
+        telaCadastroEspacoView.setVisible(false);
+    }
+
+    public String getTipoSelecionadoDTO(){
+        return espacoAtual.getTipo();
+    }
+
+    public String getNomeDTO(){
+        return espacoAtual.getNome();
+    }
+
+    public String getDescricaoDTO(){
+        return espacoAtual.getDescricao();
+    }
+
+    public String getCapacidadeDTO(){
+        return espacoAtual.getCapacidade();
+    }
+
+    public String getUnidadeFisicaDTO(){
+        return espacoAtual.getUnidadeFisica();
     }
 }

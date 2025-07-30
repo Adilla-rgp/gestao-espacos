@@ -3,9 +3,9 @@ package model.enums;
 public enum TipoQuadra{
     BASQUETE("Basquete"),
     FUTSAL("Futsal"),
-    HANDEBOL("Handebol"),
-    VOLE("Vôlei"),
-    TENIS("Tênis"),
+    HANDEBOL("Handbol"),
+    VOLE("Volei"),
+    TENIS("Tenis"),
     POLIESPORTIVA("Poliesportiva");
 
     private final String descricao;

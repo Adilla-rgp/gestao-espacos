@@ -4,6 +4,8 @@ import controller.app.AplicacaoController;
 import view.CadastroUnidadeFisicaView;
 import model.entities.predios.UnidadeFisica;
 import model.dao.UnidadeFisicaDAO;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CadastrarUnidadeFisicaController {
     private CadastroUnidadeFisicaView telaCadastrarUnidFisica;

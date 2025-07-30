@@ -44,6 +44,8 @@ public class LoginController {
 
         }catch(Exception e){
             telaLogin.mostrarMensagem("Erro ao buscar");
+                e.printStackTrace();
+
         }
     }
 

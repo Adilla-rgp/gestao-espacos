@@ -3,80 +3,203 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AtributosEspacoView extends JFrame {
     private JPanel atributosPanel;
     private JButton concluirButton;
-    private JButton voltarButton;
-    private Map<String, String[]> atributosPorTipo;
-    private JCheckBox[] checkBoxes;
+    private JButton cancelarButton;
 
-    public AtributosEspacoView(String tipoSelecionado) {
+    // Componentes específicos
+    private JSpinner spinnerProjetoresSala;
+    private JSpinner spinnerArCondicionadoSala;
+
+    private JSpinner spinnerEquipamentosLab;
+    private JComboBox<String> comboTipoLab;
+
+    private JCheckBox checkSomAuditorio;
+    private JCheckBox checkPalcoAuditorio;
+
+    private JComboBox<String> comboTipoQuadra;
+    private JCheckBox checkCobertaQuadra;
+    private JCheckBox checkIluminacaoQuadra;
+
+    private JCheckBox checkVideoconferencia;
+    private JCheckBox checkSomReuniao;
+    private JSpinner spinnerProjetoresReuniao;
+
+    private JCheckBox checkIluminacaoCampo;
+    private JCheckBox checkVestiarioCampo;
+
+    public AtributosEspacoView() {
         setTitle("Selecionar Atributos do Espaço");
-        setSize(400, 500);
+        setSize(450, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-        atributosPorTipo = carregarAtributosPorTipo();
-
         atributosPanel = new JPanel();
         atributosPanel.setLayout(new BoxLayout(atributosPanel, BoxLayout.Y_AXIS));
-        atributosPanel.setBorder(BorderFactory.createEmptyBorder(15, 25, 15, 25));
+        atributosPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+
+        concluirButton = new JButton("Concluir");
+        cancelarButton = new JButton("Cancelar");
+
+        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        botoesPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        botoesPanel.add(cancelarButton);
+        botoesPanel.add(concluirButton);
+
+        getContentPane().add(new JScrollPane(atributosPanel), BorderLayout.CENTER);
+        getContentPane().add(botoesPanel, BorderLayout.SOUTH);
+    }
+
+    public void configurarPorTipo(String tipoSelecionado) {
+        atributosPanel.removeAll();
 
         JLabel titulo = new JLabel("Atributos disponíveis para: " + tipoSelecionado);
-        titulo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        titulo.setFont(new Font("SansSerif", Font.BOLD, 18));
+        titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         atributosPanel.add(titulo);
-        atributosPanel.add(Box.createVerticalStrut(10));
+        atributosPanel.add(Box.createVerticalStrut(15));
 
-        String[] atributos = atributosPorTipo.getOrDefault(tipoSelecionado, new String[]{"Sem atributos disponíveis"});
-        checkBoxes = new JCheckBox[atributos.length];
-        for (int i = 0; i < atributos.length; i++) {
-            checkBoxes[i] = new JCheckBox(atributos[i]);
-            atributosPanel.add(checkBoxes[i]);
-        }
+        adicionarCamposEspecificos(tipoSelecionado.toLowerCase());
 
-        atributosPanel.add(Box.createVerticalStrut(20));
-        concluirButton = new JButton("Concluir");
-        voltarButton = new JButton("Voltar");
-
-        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        botoesPanel.add(concluirButton);
-        botoesPanel.add(voltarButton);
-        atributosPanel.add(botoesPanel);
-
-        add(atributosPanel);
+        atributosPanel.revalidate();
+        atributosPanel.repaint();
     }
 
-    private Map<String, String[]> carregarAtributosPorTipo() {
-        Map<String, String[]> mapa = new HashMap<>();
-        mapa.put("Sala de Aula", new String[]{"Projetor", "Quadro branco", "Ar condicionado"});
-        mapa.put("Laboratório", new String[]{"Bancadas", "Equipamentos técnicos", "Exaustor"});
-        mapa.put("Auditório", new String[]{"Sistema de som", "Palco", "Iluminação especial"});
-        mapa.put("Quadra", new String[]{"Coberta", "Marcações esportivas", "Arquibancadas"});
-        mapa.put("Sala de Reunião", new String[]{"Mesa de conferência", "TV/Projetor", "Sistema de videoconferência"});
-        return mapa;
-    }
-
-    public JButton getConcluirButton() { return concluirButton; }
-    public JButton getVoltarButton() { return voltarButton; }
-
-    public java.util.List<String> getAtributosSelecionados() {
-        java.util.List<String> selecionados = new java.util.ArrayList<>();
-        for (JCheckBox box : checkBoxes) {
-            if (box.isSelected()) {
-                selecionados.add(box.getText());
+    private void adicionarCamposEspecificos(String tipo) {
+        switch (tipo) {
+            case "sala" -> {
+                spinnerProjetoresSala = adicionarSpinner("Quantidade de projetores:", 0, 100);
+                spinnerArCondicionadoSala = adicionarSpinner("Quantidade de ar-condicionados:", 0, 100);
             }
+            case "laboratório" -> {
+                spinnerEquipamentosLab = adicionarSpinner("Quantidade de equipamentos:", 0, 500);
+                comboTipoLab = adicionarComboBox("Tipo de laboratório:", new String[]{"Informatica", "Quimica", "Biologia", "Fisica"});
+            }
+            case "auditório" -> {
+                checkSomAuditorio = adicionarCheckBox("Possui sistema de som");
+                checkPalcoAuditorio = adicionarCheckBox("Possui palco");
+            }
+            case "quadra" -> {
+                comboTipoQuadra = adicionarComboBox("Tipo de quadra:", new String[]{"Basquete", "Futsal", "Handebol", "Volei", "Tenis", "Poliesportiva"});
+                checkCobertaQuadra = adicionarCheckBox("É coberta");
+                checkIluminacaoQuadra = adicionarCheckBox("Possui iluminação");
+            }
+            case "sala de reunião" -> {
+                checkVideoconferencia = adicionarCheckBox("Possui videoconferência");
+                checkSomReuniao = adicionarCheckBox("Possui sistema de som");
+                spinnerProjetoresReuniao = adicionarSpinner("Quantidade de projetores:", 0, 10);
+            }
+            case "campo" -> {
+                checkIluminacaoCampo = adicionarCheckBox("Possui iluminação");
+                checkVestiarioCampo = adicionarCheckBox("Possui vestiário");
+            }
+            default -> atributosPanel.add(new JLabel("Tipo desconhecido. Nenhum campo adicional disponível."));
         }
-        return selecionados;
     }
 
-    public void adicionarConcluirListener(ActionListener listener) {
+    // Helpers que retornam os componentes criados
+    private JSpinner adicionarSpinner(String label, int min, int max) {
+        atributosPanel.add(new JLabel(label));
+        atributosPanel.add(Box.createVerticalStrut(5));
+        JSpinner spinner = new JSpinner(new SpinnerNumberModel(min, min, max, 1));
+        atributosPanel.add(spinner);
+        atributosPanel.add(Box.createVerticalStrut(10));
+        return spinner;
+    }
+
+    private JCheckBox adicionarCheckBox(String label) {
+        JCheckBox checkBox = new JCheckBox(label);
+        checkBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+        atributosPanel.add(checkBox);
+        atributosPanel.add(Box.createVerticalStrut(10));
+        return checkBox;
+    }
+
+    private JComboBox<String> adicionarComboBox(String label, String[] options) {
+        atributosPanel.add(new JLabel(label));
+        atributosPanel.add(Box.createVerticalStrut(5));
+        JComboBox<String> comboBox = new JComboBox<>(options);
+        atributosPanel.add(comboBox);
+        atributosPanel.add(Box.createVerticalStrut(10));
+        return comboBox;
+    }
+
+    // Getters por tipo
+    public int getQuantProjetoresSala() {
+        return (Integer) spinnerProjetoresSala.getValue();
+    }
+
+    public int getQuantArCondicionadoSala() {
+        return (Integer) spinnerArCondicionadoSala.getValue();
+    }
+
+    public int getQuantEquipamentosLab() {
+        return (Integer) spinnerEquipamentosLab.getValue();
+    }
+
+    public String getTipoLaboratorio() {
+        return (String) comboTipoLab.getSelectedItem();
+    }
+
+    public boolean isSistemaSomAuditorio() {
+        return checkSomAuditorio.isSelected();
+    }
+
+    public boolean isPalcoAuditorio() {
+        return checkPalcoAuditorio.isSelected();
+    }
+
+    public String getTipoQuadra() {
+        return (String) comboTipoQuadra.getSelectedItem();
+    }
+
+    public boolean isCobertaQuadra() {
+        return checkCobertaQuadra.isSelected();
+    }
+
+    public boolean isIluminacaoQuadra() {
+        return checkIluminacaoQuadra.isSelected();
+    }
+
+    public boolean isVideoconferencia() {
+        return checkVideoconferencia.isSelected();
+    }
+
+    public boolean isSistemaSomReuniao() {
+        return checkSomReuniao.isSelected();
+    }
+
+    public int getQuantProjetoresReuniao() {
+        return (Integer) spinnerProjetoresReuniao.getValue();
+    }
+
+    public boolean isIluminacaoCampo() {
+        return checkIluminacaoCampo.isSelected();
+    }
+
+    public boolean isVestiarioCampo() {
+        return checkVestiarioCampo.isSelected();
+    }
+
+    public JButton getConcluirButton() {
+        return concluirButton;
+    }
+
+    public JButton getCancelarButton() {
+        return cancelarButton;
+    }
+
+    public void adicionarConcluirButtonListener(ActionListener listener) {
         concluirButton.addActionListener(listener);
     }
 
-    public void adicionarVoltarListener(ActionListener listener) {
-        voltarButton.addActionListener(listener);
+    public void adicionarCancelarButtonListener(ActionListener listener) {
+        cancelarButton.addActionListener(listener);
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem);
     }
 }

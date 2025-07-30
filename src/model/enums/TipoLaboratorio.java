@@ -1,10 +1,10 @@
 package model.enums;
 
 public enum TipoLaboratorio{
-    INFORMATICA("Informática"),
-    QUIMICA("Química"),
+    INFORMATICA("Informatica"),
+    QUIMICA("Quimica"),
     BIOLOGIA("Biologia"),
-    FISICA("Física");
+    FISICA("Fisica");
 
     private final String descricao;
 

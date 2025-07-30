@@ -12,7 +12,7 @@ public class CadastroUnidadeFisicaView extends JFrame {
     private JButton cancelarButton;
 
     public CadastroUnidadeFisicaView() {
-        setTitle("Cadastro de Tipo de Espaço");
+        setTitle("Cadastro de Unidade Fisica");
         setSize(400, 350);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
