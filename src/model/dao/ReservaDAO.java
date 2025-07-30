@@ -149,6 +149,46 @@ public class ReservaDAO {
         return lista;
     }
 
+    // READ: Lista reservas de um local específico em um dia específico
+    public List<Reserva> listarReservasPorDiaELocal(int idEspaco, LocalDate data) {
+
+        String sql = "SELECT * FROM reserva WHERE id_espaco = ? AND data = ?";
+        List<Reserva> lista = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idEspaco);
+            stmt.setDate(2, Date.valueOf(data)); // De LocalDate  para java.sql.Date (necessario para JDBC)
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Horario horarioEncontrado = mapearHorario(rs);
+                LocalDate dataReserva = rs.getDate("data").toLocalDate(); // Conversão desfeita
+
+                Reserva r = new Reserva(
+                    rs.getInt("id_usuario"),
+                    rs.getInt("id_espaco"),
+                    rs.getString("nome"),
+                    rs.getString("descricao"),
+                    horarioEncontrado,
+                    dataReserva,
+                    rs.getString("status")
+                );
+                r.setId(rs.getInt("id_reserva"));
+
+                lista.add(r);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar reservas por local e data: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+
     // UPDATE: Atualiza uma reserva existente.
     public void atualizarReserva(Reserva reserva) {
         String sql = "UPDATE reserva SET nome = ?, descricao = ?, data = ?, horario_inicio = ?, horario_fim = ?, status = ? " +
@@ -172,6 +212,34 @@ public class ReservaDAO {
             System.err.println("Erro ao atualizar reserva: " + e.getMessage());
         }
     }
+    
+    // UPDATE: altera o status de uma reserva
+    public boolean atualizarStatusReserva(int idReserva, String novoStatus) {
+
+        String sql = "UPDATE reserva SET status = ? WHERE id_reserva = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, novoStatus);
+            stmt.setInt(2, idReserva);
+
+            int linhasAtualizadas = stmt.executeUpdate();   // retorna quantas linhas foram atualizadas
+
+            if (linhasAtualizadas > 0) {
+                System.out.println("Status da reserva " + idReserva + " atualizado para: " + novoStatus);
+                return true; // pelo menos uma linha foi alterada
+            } else {
+                System.out.println("Nenhuma reserva encontrada com ID: " + idReserva);
+                return false; // nenhuma linha alterada
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar status da reserva: " + e.getMessage());
+            return false; 
+        }
+    }
+
 
     // DELETE: Remove uma reserva pelo ID.
     public void deletarReserva(int idReserva) {
@@ -191,16 +259,18 @@ public class ReservaDAO {
 
     // método que mapea os horários do banco para o enum Horario
     private static Horario mapearHorario(ResultSet rs) throws SQLException {
-        LocalTime inicio = LocalTime.parse(rs.getString("horario_inicio"));
-        LocalTime fim = LocalTime.parse(rs.getString("horario_fim"));
+        // lê como java.sql.Time e converte para LocalTime
+        LocalTime inicio = rs.getTime("horario_inicio").toLocalTime();
+        LocalTime fim = rs.getTime("horario_fim").toLocalTime();
 
-
+        // compara com os valores do Enum Horario
         for (Horario h : Horario.values()) {
-            if (h.getInicio().equals(inicio) &&
-                h.getFim().equals(fim)) {
+            if (h.getInicio().equals(inicio) && h.getFim().equals(fim)) {
                 return h;
             }
         }
-        return null;
+
+        throw new SQLException("Horário não encontrado para " + inicio + " - " + fim);
     }
+
 }

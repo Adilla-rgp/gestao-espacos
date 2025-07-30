@@ -3,6 +3,7 @@ package model.dao;
 import database.ConnectionFactory;
 import model.entities.locais.*;
 import model.enums.*;
+import model.dao.ReservaDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,9 +11,29 @@ import java.util.List;
 
 public class EspacoDAO {
 
-    // insere espaço e dados da subclasse
+    // CREATE: insere espaço e dados da subclasse
     public int inserirEspaco(Local local, int idUnidade) throws SQLException {
+
         String sqlInserirEspaco = "INSERT INTO espaco (id_unidade, nome, descricao, status, capacidade) VALUES (?, ?, ?, ?, ?)";
+        String sqlVerificar = "SELECT COUNT(*) FROM espaco WHERE nome = ?"; // conta quantos espacos possuem o mesmo nome
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            // Verifica se já existe uma unidade com o mesmo nome
+            try (PreparedStatement stmtVerificarIgual = conn.prepareStatement(sqlVerificar)) {
+
+                stmtVerificarIgual.setString(1, local.getNome());
+                ResultSet rs = stmtVerificarIgual.executeQuery();
+
+
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("Já existe um local com o nome: " + local.getNome());
+                    return -1; 
+                }
+            }
+        }
+
+        // não existe, insere unidade
 
         try (Connection conn = ConnectionFactory.getConnection()) {
             conn.setAutoCommit(false);
@@ -53,7 +74,7 @@ public class EspacoDAO {
         }
     }
 
-    // insere os dados da subclasse em sua tabela específica
+    // CREATE: insere os dados da subclasse em sua tabela específica
     private void inserirDadosSubclasse(Connection conn, int idEspaco, Local local) throws SQLException {
         String sqlSubclasse = null;
         PreparedStatement stmtSubclasse = null;
@@ -116,6 +137,7 @@ public class EspacoDAO {
         stmtSubclasse.close();
     }
 
+    // READ: buscar locais por id
     public static Local buscarPorId(int idEspaco) throws SQLException {
         String sql = "SELECT * FROM espaco WHERE id_espaco = ?";
 
@@ -139,7 +161,7 @@ public class EspacoDAO {
         return null;
     }
 
-    // carrega a tabela filha e retorna a subclasse correspondente
+    // Auxiliar: carrega a tabela filha e retorna a subclasse correspondente
     private static Local carregarSubclasse(Connection conn, int idEspaco, String nome, String descricao, String status, int capacidade) throws SQLException {
 
         // Sala
@@ -207,6 +229,7 @@ public class EspacoDAO {
         return null;
     }
 
+    // READ: lista todos os locais (espaços)
     public List<Local> listarTodos() throws SQLException {
         List<Local> lista = new ArrayList<>();
         String sql = "SELECT id_espaco FROM espaco";
@@ -226,6 +249,7 @@ public class EspacoDAO {
         return lista;
     }
 
+    // READ: lista todos os locais pelo status
     public List<Local> listarPorStatus(String status) throws SQLException {
         List<Local> lista = new ArrayList<>();
         String sql = "SELECT id_espaco FROM espaco WHERE status = ?";
@@ -246,6 +270,34 @@ public class EspacoDAO {
         return lista;
     }
 
+    // READ: lista os locais pela unidade
+    public List<Local> listarLocaisPorUnidade(int idUnidade) {
+        String sql = "SELECT * FROM espaco WHERE id_unidade = ?";
+        List<Local> locais = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUnidade);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idEspaco = rs.getInt("id_espaco");
+                Local local = buscarPorId(idEspaco); 
+                if(local != null){
+                    locais.add(local);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar locais da unidade: " + e.getMessage());
+        }
+
+        return locais;
+    }
+
+
+    // UPDATE
     public void atualizarEspaco(Local local, int idEspaco) throws SQLException {
         String sqlAtualizarEspaco = "UPDATE espaco SET nome = ?, descricao = ?, status = ?, capacidade = ? WHERE id_espaco = ?";
 
@@ -278,6 +330,7 @@ public class EspacoDAO {
         }
     }
 
+    // UPDATE
     private void atualizarDadosSubclasse(Connection conn, int idEspaco, Local local) throws SQLException {
         String sql = null;
         PreparedStatement stmt = null;
@@ -332,6 +385,7 @@ public class EspacoDAO {
         stmt.close();
     }
 
+    // DELETE
     public void deletarEspaco(int idEspaco) throws SQLException {
         String sql = "DELETE FROM espaco WHERE id_espaco = ?";
         try (Connection conn = ConnectionFactory.getConnection();

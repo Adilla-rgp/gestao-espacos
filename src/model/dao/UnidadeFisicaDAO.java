@@ -13,26 +13,45 @@ public class UnidadeFisicaDAO {
 
     // CREATE: insere uma unidade física (prédio ou núcleo) - retorna o id
     public static int inserir(UnidadeFisica unidade, String tipo) {
-        String sql = "INSERT INTO unidade_fisica (nome, descricao, tipo) VALUES (?, ?, ?)";
-        try (Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setString(1, unidade.getNome());
-            stmt.setString(2, unidade.getDescricao());
-            stmt.setString(3, tipo);
+        String sqlVerificar = "SELECT COUNT(*) FROM unidade_fisica WHERE nome = ?"; // conta quantas unidades possuem o mesmo nome
+        String sqlInserir = "INSERT INTO unidade_fisica (nome, descricao, tipo) VALUES (?, ?, ?)";
 
-            int affectedRows = stmt.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("Falha ao inserir unidade física, nenhuma linha afetada.");
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            // Verifica se já existe uma unidade com o mesmo nome
+            try (PreparedStatement stmtVerificarIgual = conn.prepareStatement(sqlVerificar)) {
+
+                stmtVerificarIgual.setString(1, unidade.getNome());
+                ResultSet rs = stmtVerificarIgual.executeQuery();
+
+
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("Já existe uma unidade física com o nome: " + unidade.getNome());
+                    return -1; 
+                }
             }
 
-            try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    int idUnidade = generatedKeys.getInt(1);
-                    System.out.println("Unidade inserida com ID: " + idUnidade);
-                    return idUnidade;
-                } else {
-                    throw new SQLException("Falha ao obter ID da unidade inserida.");
+            // não existe, insere unidade
+            try (PreparedStatement stmt = conn.prepareStatement(sqlInserir, Statement.RETURN_GENERATED_KEYS)) {
+
+                stmt.setString(1, unidade.getNome());
+                stmt.setString(2, unidade.getDescricao());
+                stmt.setString(3, tipo);
+
+                int linhasAfetadas = stmt.executeUpdate();
+                if (linhasAfetadas == 0) {
+                    throw new SQLException("Falha ao inserir unidade física, nenhuma linha afetada.");
+                }
+
+                try (ResultSet chavesGeradas = stmt.getGeneratedKeys()) {
+                    if (chavesGeradas.next()) {
+                        int idUnidade = chavesGeradas.getInt(1);
+                        System.out.println("Unidade inserida com ID: " + idUnidade);
+                        return idUnidade;
+                    } else {
+                        throw new SQLException("Falha ao obter ID da unidade inserida.");
+                    }
                 }
             }
 
@@ -41,6 +60,7 @@ public class UnidadeFisicaDAO {
         }
         return -1; // erro
     }
+
 
     // READ: busca pelo id
     public UnidadeFisica buscarPorId(int idUnidade) {
