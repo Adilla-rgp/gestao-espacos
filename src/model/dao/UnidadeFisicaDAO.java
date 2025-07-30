@@ -196,4 +196,25 @@ public class UnidadeFisicaDAO {
             throw e;
         }
     }
+
+
+    // READ: busca o tipo da unidade pelo nome
+    public static String buscarTipoPorNome(String nomeUnidade) {
+        String sql = "SELECT tipo FROM unidade_fisica WHERE nome = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeUnidade);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("tipo");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar tipo da unidade física: " + e.getMessage());
+        }
+        return null;
+    }
+
 }

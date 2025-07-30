@@ -151,61 +151,68 @@ private void carregarHorariosDisponiveis(){
         // Converter data do formato dd/MM/yyyy para LocalDate
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataString, formatter);
+        LocalDate hoje = LocalDate.now();
+        if(data.isBefore(hoje)){
+            telaNovaReserva.mostrarMensagem("A data nao deve ser no passado");
+            return;
+        }
+
+
 
         // Buscar Local pelo nome
         Local local = EspacoDAO.buscarPorNome(salaSelecionada);
-        if (local == null) {
-            telaNovaReserva.mostrarMensagem("Sala selecionada não encontrada.");
-            return;
-        }
-
-        // Identificar o Horário pelo enum
-        String[] partes = horarioSelecionado.split(" - ");
-        if (partes.length != 2) {
-            telaNovaReserva.mostrarMensagem("Horário inválido.");
-            return;
-        }
-        String inicioStr = partes[0].trim();
-        String fimStr = partes[1].trim();
-
-        DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime inicio = LocalTime.parse(inicioStr, horaFormatter);
-        LocalTime fim = LocalTime.parse(fimStr, horaFormatter);
-
-        Horario horario = null;
-        for (Horario h : Horario.values()) {
-            if (h.getInicio().equals(inicio) && h.getFim().equals(fim)) {
-                horario = h;
-                break;
+            if (local == null) {
+                telaNovaReserva.mostrarMensagem("Sala selecionada não encontrada.");
+                return;
             }
+
+            // Identificar o Horário pelo enum
+            String[] partes = horarioSelecionado.split(" - ");
+            if (partes.length != 2) {
+                telaNovaReserva.mostrarMensagem("Horário inválido.");
+                return;
+            }
+            String inicioStr = partes[0].trim();
+            String fimStr = partes[1].trim();
+
+            DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            LocalTime inicio = LocalTime.parse(inicioStr, horaFormatter);
+            LocalTime fim = LocalTime.parse(fimStr, horaFormatter);
+
+            Horario horario = null;
+            for (Horario h : Horario.values()) {
+                if (h.getInicio().equals(inicio) && h.getFim().equals(fim)) {
+                    horario = h;
+                    break;
+                }
+            }
+
+            if (horario == null) {
+                telaNovaReserva.mostrarMensagem("Horário selecionado não corresponde a nenhum disponível.");
+                return;
+            }
+
+            // Usuário logado
+            int idUsuario = controller.getUsuario().getId();
+
+            // Criar reserva
+            Reserva reserva = new Reserva();
+            reserva.setIdUsuario(idUsuario);
+            reserva.setIdEspaco(local.getId());
+            reserva.setNome("Reserva de " + salaSelecionada);
+            reserva.setDescricao("Reserva feita via sistema");
+            reserva.setData(data);
+            reserva.setHorario(horario);
+            reserva.setStatus("Agendada");
+            
+            ReservaDAO.inserirReserva(reserva);
+
+            telaNovaReserva.mostrarMensagem("Reserva confirmada com sucesso!");
+            controller.mostrarTelaDashboard();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            telaNovaReserva.mostrarMensagem("Erro ao confirmar a reserva: " + e.getMessage());
         }
-
-        if (horario == null) {
-            telaNovaReserva.mostrarMensagem("Horário selecionado não corresponde a nenhum disponível.");
-            return;
-        }
-
-        // Usuário logado
-        int idUsuario = controller.getUsuario().getId();
-
-        // Criar reserva
-        Reserva reserva = new Reserva();
-        reserva.setIdUsuario(idUsuario);
-        reserva.setIdEspaco(local.getId());
-        reserva.setNome("Reserva de " + salaSelecionada);
-        reserva.setDescricao("Reserva feita via sistema");
-        reserva.setData(data);
-        reserva.setHorario(horario);
-        reserva.setStatus("Agendada");
-        
-        ReservaDAO.inserirReserva(reserva);
-
-        telaNovaReserva.mostrarMensagem("Reserva confirmada com sucesso!");
-        controller.mostrarTelaDashboard();
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        telaNovaReserva.mostrarMensagem("Erro ao confirmar a reserva: " + e.getMessage());
-    }
     }
 }

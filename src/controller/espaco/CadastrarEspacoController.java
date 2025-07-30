@@ -21,7 +21,7 @@ public class CadastrarEspacoController {
 
         telaCadastroEspaco.adicionarCancelarButtonListener(e -> controller.mostrarTelaADMDashboard());
         telaCadastroEspaco.adicionarContinuarButtonListener(e -> continuarCadastro());
-        telaCadastroEspaco.getComboUnidade().addActionListener(e ->carregarUnidadesDisponiveis());
+        telaCadastroEspaco.getComboUnidade().addActionListener(e ->atualizarTiposPorUnidade());
 
     }
 
@@ -49,4 +49,29 @@ public class CadastrarEspacoController {
         }
         telaCadastroEspaco.atualizarComboUnidade(listaUnidadeFisicaNome);
     }
+
+    private void atualizarTiposPorUnidade(){
+        String nomeSelecionado = telaCadastroEspaco.getUnidade();
+        if (nomeSelecionado != null) {
+            String tipoUnidadeSelecionada = UnidadeFisicaDAO.buscarTipoPorNome(nomeSelecionado);
+
+            if("Predio".equals(tipoUnidadeSelecionada)){
+                telaCadastroEspaco.atualizarComboPredio();
+            }
+            else if("Nucleo".equals(tipoUnidadeSelecionada)){
+                telaCadastroEspaco.atualizarComboNucleo();
+            }
+            else{
+                telaCadastroEspaco.mostrarMensagem("ERRO ao carregar os locais");
+            }
+        }
+    }
+
+
+
+
+
+
+
+
 }

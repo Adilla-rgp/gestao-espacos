@@ -12,7 +12,6 @@ public class CadastroEspacoView extends JFrame {
     private JComboBox<String> unidadeCombo;
     private JTextArea descricaoArea;
     private JButton cancelarButton;
-    private JButton limparButton;
     private JButton continuarButton;
 
     public CadastroEspacoView() {
@@ -54,7 +53,7 @@ public class CadastroEspacoView extends JFrame {
         mainPanel.add(titulo("Informações Gerais"));
         mainPanel.add(criarLinha("Nome:", nomeField));
         mainPanel.add(criarLinha("Tipo de Espaço:", tipoCombo));
-        mainPanel.add(criarLinha("Capacidade:", capacidadeCombo));
+        mainPanel.add(criarLinha("Capacidade máxima:", capacidadeCombo));
 
         mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(titulo("Localização"));
@@ -69,11 +68,9 @@ public class CadastroEspacoView extends JFrame {
         botoesPanel.setBackground(new Color(245, 248, 250));
 
         continuarButton = new JButton("Continuar Cadastro");
-        limparButton = new JButton("Limpar");
         cancelarButton = new JButton("Cancelar");
 
         botoesPanel.add(continuarButton);
-        botoesPanel.add(limparButton);
         botoesPanel.add(cancelarButton);
 
         mainPanel.add(botoesPanel);
@@ -106,7 +103,6 @@ public class CadastroEspacoView extends JFrame {
     public String getDescricao() { return descricaoArea.getText(); }
 
     public JButton getCancelarButton() { return cancelarButton; }
-    public JButton getLimparButton() { return limparButton; }
     public JButton getContinuarButton() { return continuarButton; }
 
     public void limparCampos() {
@@ -125,10 +121,6 @@ public class CadastroEspacoView extends JFrame {
         cancelarButton.addActionListener(listener);
     }
 
-    public void adicionarLimparButtonListener(ActionListener listener) {
-        limparButton.addActionListener(listener);
-    }
-
     public void adicionarContinuarButtonListener(ActionListener listener) {
         continuarButton.addActionListener(listener);
     }
@@ -142,5 +134,20 @@ public class CadastroEspacoView extends JFrame {
 
     public void mostrarMensagem(String mensagem) {
         JOptionPane.showMessageDialog(null, mensagem);
+    }
+
+    public void atualizarComboPredio() {
+        tipoCombo.removeAllItems();
+        tipoCombo.addItem("Sala");
+        tipoCombo.addItem("Auditório");
+        tipoCombo.addItem("Laboratório");
+        tipoCombo.addItem("Sala de Reunião");
+    }
+
+    public void atualizarComboNucleo() {
+        tipoCombo.removeAllItems();
+        tipoCombo.addItem("Sala");
+        tipoCombo.addItem("Quadra");
+        tipoCombo.addItem("Campo");
     }
 }

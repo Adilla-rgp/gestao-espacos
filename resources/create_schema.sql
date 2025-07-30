@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS reserva (
     data DATE NOT NULL,
     horario_inicio TIME NOT NULL,
     horario_fim TIME NOT NULL,
-    status TEXT NOT NULL CHECK (status IN ('Agendada','Em Andamento','Finalizada','Cancelada')),
+    status TEXT NOT NULL CHECK (status IN ('Agendada','Em Andamento','Confirmada','Cancelada')),
     descricao TEXT,
     FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
     FOREIGN KEY (id_espaco) REFERENCES espaco(id_espaco)

@@ -3,7 +3,7 @@ package model.enums;
 public enum TipoStatusReserva {
     AGENDADA("Agendada"),
     EM_ANDAMENTO("Em Andamento"),
-    FINALIZADA("Finalizada"),
+    FINALIZADA("Confirmada"),
     CANCELADA("Cancelada");
 
     private final String descricao;
