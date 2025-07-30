@@ -208,6 +208,34 @@ public class ReservaDAO {
             System.err.println("Erro ao atualizar reserva: " + e.getMessage());
         }
     }
+    
+    // UPDATE: altera o status de uma reserva
+    public boolean atualizarStatusReserva(int idReserva, String novoStatus) {
+
+        String sql = "UPDATE reserva SET status = ? WHERE id_reserva = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, novoStatus);
+            stmt.setInt(2, idReserva);
+
+            int linhasAtualizadas = stmt.executeUpdate();   // retorna quantas linhas foram atualizadas
+
+            if (linhasAtualizadas > 0) {
+                System.out.println("Status da reserva " + idReserva + " atualizado para: " + novoStatus);
+                return true; // pelo menos uma linha foi alterada
+            } else {
+                System.out.println("Nenhuma reserva encontrada com ID: " + idReserva);
+                return false; // nenhuma linha alterada
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar status da reserva: " + e.getMessage());
+            return false; 
+        }
+    }
+
 
     // DELETE: Remove uma reserva pelo ID.
     public void deletarReserva(int idReserva) {

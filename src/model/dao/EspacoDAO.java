@@ -3,6 +3,7 @@ package model.dao;
 import database.ConnectionFactory;
 import model.entities.locais.*;
 import model.enums.*;
+import model.dao.ReservaDAO;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +13,27 @@ public class EspacoDAO {
 
     // CREATE: insere espaço e dados da subclasse
     public int inserirEspaco(Local local, int idUnidade) throws SQLException {
+
         String sqlInserirEspaco = "INSERT INTO espaco (id_unidade, nome, descricao, status, capacidade) VALUES (?, ?, ?, ?, ?)";
+        String sqlVerificar = "SELECT COUNT(*) FROM espaco WHERE nome = ?"; // conta quantos espacos possuem o mesmo nome
+
+        try (Connection conn = ConnectionFactory.getConnection()) {
+
+            // Verifica se já existe uma unidade com o mesmo nome
+            try (PreparedStatement stmtVerificarIgual = conn.prepareStatement(sqlVerificar)) {
+
+                stmtVerificarIgual.setString(1, local.getNome());
+                ResultSet rs = stmtVerificarIgual.executeQuery();
+
+
+                if (rs.next() && rs.getInt(1) > 0) {
+                    System.out.println("Já existe um local com o nome: " + local.getNome());
+                    return -1; 
+                }
+            }
+        }
+
+        // não existe, insere unidade
 
         try (Connection conn = ConnectionFactory.getConnection()) {
             conn.setAutoCommit(false);
@@ -248,6 +269,33 @@ public class EspacoDAO {
         }
         return lista;
     }
+
+    // READ: lista os locais pela unidade
+    public List<Local> listarLocaisPorUnidade(int idUnidade) {
+        String sql = "SELECT * FROM espaco WHERE id_unidade = ?";
+        List<Local> locais = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idUnidade);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int idEspaco = rs.getInt("id_espaco");
+                Local local = buscarPorId(idEspaco); 
+                if(local != null){
+                    locais.add(local);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar locais da unidade: " + e.getMessage());
+        }
+
+        return locais;
+    }
+
 
     // UPDATE
     public void atualizarEspaco(Local local, int idEspaco) throws SQLException {
