@@ -1,6 +1,6 @@
 package model.entities.predios;
 
-public abstract class UnidadeFisica {
+public class UnidadeFisica {
     protected int idUnidade;   
     protected String nome;
     protected String descricao;

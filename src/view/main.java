@@ -8,7 +8,7 @@ import controller.*;
 
 public class main {
     public static void main(String[] args) {
-        SistemaReservasView tela = new SistemaReservasView();
+        ListagemReservasAdminView tela = new ListagemReservasAdminView();
         tela.setVisible(true);
     }
 }

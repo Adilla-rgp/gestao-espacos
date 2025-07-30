@@ -4,13 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class CadastroTipoEspacoView extends JFrame {
-    private JTextField nomeTipoField;
+public class CadastroUnidadeFisicaView extends JFrame {
+    private JTextField nomeUnidadeFisicaField;
     private JTextArea descricaoTipoArea;
     private JButton confirmarButton;
+    private JComboBox<String> tiposUnidadeFisica;
     private JButton cancelarButton;
 
-    public CadastroTipoEspacoView() {
+    public CadastroUnidadeFisicaView() {
         setTitle("Cadastro de Tipo de Espaço");
         setSize(400, 350);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -27,22 +28,27 @@ public class CadastroTipoEspacoView extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         mainPanel.setBackground(new Color(250, 250, 255));
 
-        nomeTipoField = new JTextField(20);
+        nomeUnidadeFisicaField = new JTextField(20);
         descricaoTipoArea = new JTextArea(4, 20);
         descricaoTipoArea.setLineWrap(true);
         descricaoTipoArea.setWrapStyleWord(true);
         JScrollPane descricaoScroll = new JScrollPane(descricaoTipoArea);
         descricaoScroll.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        tiposUnidadeFisica = new JComboBox<>(new String[]{
+            "Predio", "Nucleo"
+        });
 
         confirmarButton = new JButton("Confirmar");
         cancelarButton = new JButton("Cancelar");
 
-        mainPanel.add(titulo("Nome do Tipo de Espaço"));
-        mainPanel.add(nomeTipoField);
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanel.add(titulo("Nome do Espaço"));
+        mainPanel.add(nomeUnidadeFisicaField);
+        mainPanel.add(Box.createVerticalStrut(8));
+
+        mainPanel.add(criarLinha("Tipo de Espaço:", tiposUnidadeFisica));
         mainPanel.add(titulo("Descrição do Tipo"));
         mainPanel.add(descricaoScroll);
-        mainPanel.add(Box.createVerticalStrut(20));
+        mainPanel.add(Box.createVerticalStrut(8));
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         botoesPanel.setBackground(mainPanel.getBackground());
@@ -60,10 +66,11 @@ public class CadastroTipoEspacoView extends JFrame {
     }
 
     // Getters
-    public String getNomeTipo() { return nomeTipoField.getText(); }
+    public String getNomeUnidadeFIsica() { return nomeUnidadeFisicaField.getText(); }
     public String getDescricaoTipo() { return descricaoTipoArea.getText(); }
     public JButton getConfirmarButton() { return confirmarButton; }
     public JButton getCancelarButton() { return cancelarButton; }
+    public String getTipo() { return (String) tiposUnidadeFisica.getSelectedItem(); }
 
     // Listeners
     public void adicionarConfirmarListener(ActionListener listener) {
@@ -75,7 +82,22 @@ public class CadastroTipoEspacoView extends JFrame {
     }
 
     public void limparCampos() {
-        nomeTipoField.setText("");
+        nomeUnidadeFisicaField.setText("");
         descricaoTipoArea.setText("");
     }
+
+    private JPanel criarLinha(String labelTexto, JComponent campo) {
+        JPanel linha = new JPanel(new BorderLayout(5, 5));
+        linha.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        linha.setBackground(new Color(245, 248, 250));
+        JLabel label = new JLabel(labelTexto);
+        linha.add(label, BorderLayout.WEST);
+        linha.add(campo, BorderLayout.CENTER);
+        return linha;
+    }
+
+    public void mostrarMensagem(String mensagem) {
+        JOptionPane.showMessageDialog(null, mensagem);
+    }
+
 }

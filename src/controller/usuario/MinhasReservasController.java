@@ -7,19 +7,20 @@ import javax.swing.table.DefaultTableModel;
 import controller.app.AplicacaoController;
 import model.dao.ReservaDAO;
 import model.entities.agenda.Reserva;
-import view.MinhasReservasView;
+import view.ReservasView;
 import java.util.List;
 
 public class MinhasReservasController {
-    private MinhasReservasView telaMinhasReservas;
+    private ReservasView telaMinhasReservas;
     private AplicacaoController controller;
 
-    public MinhasReservasController(MinhasReservasView telaMinhasReservas, AplicacaoController controller){
+    public MinhasReservasController(ReservasView telaMinhasReservas, AplicacaoController controller){
         this.telaMinhasReservas = telaMinhasReservas;
         this.controller = controller;
 
         telaMinhasReservas.adicionarCancelarButtonListener(e -> cancelar());
         telaMinhasReservas.adicionarConfirmarButtonListener(e -> confirmar());
+        telaMinhasReservas.adicionarVoltarButtonListener(e -> controller.mostrarTelaDashboard());
     }
 
     private void cancelar() {

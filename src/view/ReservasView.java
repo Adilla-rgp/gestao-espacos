@@ -5,13 +5,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class MinhasReservasView extends JFrame {
+public class ReservasView extends JFrame {
     private JTable tabela;
     private JButton cancelarButton;
     private JButton confirmarButton;
     private JButton voltarButton; // novo botão
 
-    public MinhasReservasView() {
+    public ReservasView() {
         setTitle("Minhas Reservas");
         setSize(900, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -74,6 +74,39 @@ public class UsuarioDAO {
         return null; 
     }
 
+    // READ: Busca um usuário pelo id (SELECT com WHERE).
+    
+    public static Usuario buscarPorID(int id) throws SQLException {
+
+        String sqlBuscar = "SELECT * FROM usuario WHERE id_usuario = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmtBuscar = conn.prepareStatement(sqlBuscar)) {
+
+            stmtBuscar.setInt(1, id);
+            //Executa a consulta
+            ResultSet rsBusca = stmtBuscar.executeQuery();
+
+            // cria objeto Usuario a partir do ResultSet
+            if (rsBusca.next()) {
+                Usuario u = new Usuario(
+                        rsBusca.getInt("id_usuario"),    
+                        rsBusca.getString("nome"),
+                        rsBusca.getString("email"),
+                        rsBusca.getString("senha_hash"),
+                        rsBusca.getBoolean("is_adm")
+                );
+                return u;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar usuário: " + e.getMessage());
+            throw new SQLException("Erro ao buscar usuario " + e.getMessage());
+        }
+
+        return null; 
+    }
+
     // READ: Lista todos os usuários.
     
     public List<Usuario> listarTodosUsuarios() {

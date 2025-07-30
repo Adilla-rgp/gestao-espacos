@@ -12,8 +12,8 @@ public class AdminDashboardController {
         this.controller = controller;
 
         telaDashboard.adicionarMinhasReservasListener(e -> controller.mostrarTelaMinhasReservas());
-        telaDashboard.adicionarCadastrarEspacosListener(e -> controller.mostrarTelaCadastroEspaco());
-
-
+        telaDashboard.adicionarCadastrarEspacoListener(e -> controller.mostrarTelaCadastrarEspaco());
+        telaDashboard.adicionarCadastrarEspacoIndividualListener(e -> controller.mostrarTelaCadastroUnidFisica());
+        telaDashboard.adicionarVerTodasReservasListener(e -> controller.mostrarTelaTodasReservas());
     }
 }

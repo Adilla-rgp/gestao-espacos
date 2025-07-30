@@ -12,7 +12,7 @@ import java.util.List;
 public class UnidadeFisicaDAO {
 
     // CREATE: insere uma unidade física (prédio ou núcleo) - retorna o id
-    public int inserir(UnidadeFisica unidade, String tipo) {
+    public static int inserir(UnidadeFisica unidade, String tipo) {
         String sql = "INSERT INTO unidade_fisica (nome, descricao, tipo) VALUES (?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {

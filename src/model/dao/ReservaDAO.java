@@ -76,7 +76,7 @@ public class ReservaDAO {
     }
 
     // READ: Lista todas as reservas do banco.
-    public List<Reserva> listarTodasReservas() {
+    public static List<Reserva> listarTodasReservas() {
         String sql = "SELECT * FROM reserva";
         List<Reserva> lista = new ArrayList<>();
 
@@ -86,6 +86,7 @@ public class ReservaDAO {
 
             while (rs.next()) {
                 Horario horarioEncontrado = mapearHorario(rs);
+                LocalDate data = LocalDate.parse(rs.getString("data"));
 
                 Reserva r = new Reserva(
                         rs.getInt("id_usuario"),
@@ -93,10 +94,13 @@ public class ReservaDAO {
                         rs.getString("nome"),
                         rs.getString("descricao"),
                         horarioEncontrado,
-                        rs.getDate("data").toLocalDate(),
+                        data,
                         rs.getString("status")
                 );
                 r.setId(rs.getInt("id_reserva"));
+                Local localSala = EspacoDAO.buscarPorId(rs.getInt("id_usuario"));
+                r.setLocal(localSala);
+                
 
                 lista.add(r);
             }

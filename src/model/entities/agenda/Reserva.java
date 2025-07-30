@@ -9,6 +9,7 @@ public class Reserva {
     private int idReserva;           
     private int idUsuario;     // FK 
     private int idEspaco;      // FK
+    private String nomeUsuario;
     private String nome;
     private String descricao;
     private Horario horario;
@@ -31,6 +32,7 @@ public class Reserva {
         this.data = data;
         this.status = TipoStatusReserva.fromDescricao(status);
         this.local = null;
+        this.nomeUsuario = null;
     }
 
     // Construtores para lógica sem banco
@@ -39,6 +41,7 @@ public class Reserva {
         this.descricao = descricao;
         this.horario = horario;
         this.local = local;
+        this.nomeUsuario = null;
     }
 
     public Reserva(String nome, Horario horario){
@@ -47,11 +50,12 @@ public class Reserva {
         this.horario = horario;
     }
 
-    // getters 
+    // getters
 
-    public String getIdString(){
-        return "a";
+    public String getNomeUsuario(){
+        return nomeUsuario;
     }
+
     public int getId() {
         return idReserva;
     }
@@ -95,6 +99,11 @@ public class Reserva {
     }
 
     // setters
+
+    public void setNomeUsuario(String nome){
+        this.nomeUsuario = nome;
+    }
+
     public void setId(int idReserva) {
         this.idReserva = idReserva;
     }

@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class AdminDashboardView extends JFrame {
     private JLabel tituloLabel;
-    private JButton cadastrarEspacosButton;
+    private JButton cadastrarEspacoView;
     private JButton cadastrarEspacoIndividualButton; // Novo botão
     private JButton minhasReservasButton;
     private JButton verTodasReservasButton;
@@ -32,13 +32,13 @@ public class AdminDashboardView extends JFrame {
         tituloLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
 
         // Botões
-        cadastrarEspacosButton = new JButton("Cadastro de Espaços");
-        cadastrarEspacoIndividualButton = new JButton("Cadastrar Espaço"); // Instanciando novo botão
+        cadastrarEspacoView = new JButton("Cadastro Espaco");
+        cadastrarEspacoIndividualButton = new JButton("Cadastrar Unidade Fisica"); // Instanciando novo botão
         minhasReservasButton = new JButton("Minhas Reservas");
         verTodasReservasButton = new JButton("Ver Todas as Reservas");
 
         for (JButton botao : new JButton[]{
-                cadastrarEspacosButton,
+                cadastrarEspacoView,
                 cadastrarEspacoIndividualButton,
                 minhasReservasButton,
                 verTodasReservasButton
@@ -48,7 +48,7 @@ public class AdminDashboardView extends JFrame {
         }
 
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
-        botoesPanel.add(cadastrarEspacosButton);
+        botoesPanel.add(cadastrarEspacoView);
         botoesPanel.add(cadastrarEspacoIndividualButton); // Adicionando novo botão
         botoesPanel.add(minhasReservasButton);
         botoesPanel.add(verTodasReservasButton);
@@ -126,7 +126,7 @@ public class AdminDashboardView extends JFrame {
     }
 
     // Getters de botões
-    public JButton getCadastrarEspacosButton() { return cadastrarEspacosButton; }
+    public JButton getcadastrarEspacoView() { return cadastrarEspacoView; }
     public JButton getCadastrarEspacoIndividualButton() { return cadastrarEspacoIndividualButton; } // Getter do novo botão
     public JButton getMinhasReservasButton() { return minhasReservasButton; }
     public JButton getVerTodasReservasButton() { return verTodasReservasButton; }
@@ -140,8 +140,8 @@ public class AdminDashboardView extends JFrame {
     public void setMaisUsados(String texto) { maisUsadosLabel.setText(texto); }
 
     // Listeners
-    public void adicionarCadastrarEspacosListener(ActionListener listener) {
-        cadastrarEspacosButton.addActionListener(listener);
+    public void adicionarCadastrarEspacoListener(ActionListener listener) {
+        cadastrarEspacoView.addActionListener(listener);
     }
 
     public void adicionarCadastrarEspacoIndividualListener(ActionListener listener) {
