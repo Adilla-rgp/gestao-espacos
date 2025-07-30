@@ -31,9 +31,9 @@ public class MinhasReservasController {
 
             int idReserva = (int) tabela.getValueAt(linhaSelecionada, 0);
 
-            //boolean sucesso = ReservaDAO.cancelarReserva(idReserva);
+            boolean sucesso = ReservaDAO.atualizarStatusReserva(idReserva, "Cancelada");
 
-            if (/*sucesso*/ linhaSelecionada >= 2) {
+            if (sucesso) {
                 telaMinhasReservas.mostrarMensagem("Reserva cancelada com sucesso!");
                 atualizarTabelaReservasUsuario();                                                   // recarrega tabela
             }else{
@@ -53,9 +53,9 @@ public class MinhasReservasController {
 
             int idReserva = (int) tabela.getValueAt(linhaSelecionada, 0);
 
-            //boolean sucesso = ReservaDAO.cancelarReserva(idReserva);
+            boolean sucesso = ReservaDAO.atualizarStatusReserva(idReserva, "Confirmada");
 
-            if (/*sucesso*/ linhaSelecionada >= 2) {
+            if (sucesso) {
                 telaMinhasReservas.mostrarMensagem("Reserva confirmada com sucesso!");
                 atualizarTabelaReservasUsuario();                                                       //recarrega tabela
             }else{

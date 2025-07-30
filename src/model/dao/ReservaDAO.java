@@ -5,42 +5,49 @@ import model.entities.agenda.Reserva;
 import model.entities.agenda.Horario;
 import model.entities.locais.Local;
 
+import java.lang.foreign.SymbolLookup;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReservaDAO {
 
     // CREATE: Insere nova reserva 
-    public void inserirReserva(Reserva reserva) {
+
+    public static void inserirReserva(Reserva reserva) {
         String sql = "INSERT INTO reserva (id_usuario, id_espaco, nome, descricao, data, horario_inicio, horario_fim, status) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            // substituindo os ? pelos valores
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
             stmt.setInt(1, reserva.getIdUsuario());
             stmt.setInt(2, reserva.getIdEspaco());
             stmt.setString(3, reserva.getNome());
             stmt.setString(4, reserva.getDescricao());
-            stmt.setDate(5, Date.valueOf(reserva.getData()));  // usa a data do objeto
-            stmt.setTime(6, Time.valueOf(reserva.getHorario().getInicio()));
-            stmt.setTime(7, Time.valueOf(reserva.getHorario().getFim()));
+            
+            // Converter LocalDate para String no formato "yyyy-MM-dd"
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            stmt.setString(5, reserva.getData().format(dateFormatter));
+            
+            // Converter LocalTime para String no formato "HH:mm"
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+            stmt.setString(6, reserva.getHorario().getInicio().format(timeFormatter));
+            stmt.setString(7, reserva.getHorario().getFim().format(timeFormatter));
+            
             stmt.setString(8, reserva.getStatus());
-
+            
             stmt.executeUpdate();
             System.out.println("Reserva criada com sucesso: " + reserva.getNome());
-
         } catch (SQLException e) {
             System.err.println("Erro ao inserir reserva: " + e.getMessage());
         }
     }
 
     // READ: Busca uma reserva pelo id
-    public Reserva buscarPorId(int idReserva) {
+    public static Reserva buscarPorId(int idReserva) {
         String sql = "SELECT * FROM reserva WHERE id_reserva = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -159,13 +166,26 @@ public class ReservaDAO {
             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, idEspaco);
-            stmt.setDate(2, Date.valueOf(data)); // De LocalDate  para java.sql.Date (necessario para JDBC)
+            stmt.setString(2, data.toString()); // LocalDate.toString() retorna "YYYY-MM-DD"
+
+            System.out.println("Data no banco de dados: " + data);
 
             ResultSet rs = stmt.executeQuery();
 
+            System.out.println("Foi buscar");
+            System.out.println("ResultSet tem dados: " + rs.isBeforeFirst()); // Verifica se há dados
+
+            System.out.println("=== DEBUG CONSULTA ===");
+            System.out.println("ID Espaço buscado: " + idEspaco);
+            System.out.println("Data buscada: " + Date.valueOf(data));
+            System.out.println("SQL com parâmetros: " + stmt.toString());
+            System.out.println("====================");
+
+
             while (rs.next()) {
                 Horario horarioEncontrado = mapearHorario(rs);
-                LocalDate dataReserva = rs.getDate("data").toLocalDate(); // Conversão desfeita
+                LocalDate dataReserva = LocalDate.parse(rs.getString("data"));
+                System.out.println("Encontou uma");
 
                 Reserva r = new Reserva(
                     rs.getInt("id_usuario"),
@@ -190,7 +210,7 @@ public class ReservaDAO {
 
 
     // UPDATE: Atualiza uma reserva existente.
-    public void atualizarReserva(Reserva reserva) {
+    public static void atualizarReserva(Reserva reserva) {
         String sql = "UPDATE reserva SET nome = ?, descricao = ?, data = ?, horario_inicio = ?, horario_fim = ?, status = ? " +
                      "WHERE id_reserva = ?";
 
@@ -214,7 +234,7 @@ public class ReservaDAO {
     }
     
     // UPDATE: altera o status de uma reserva
-    public boolean atualizarStatusReserva(int idReserva, String novoStatus) {
+    public static boolean atualizarStatusReserva(int idReserva, String novoStatus) {
 
         String sql = "UPDATE reserva SET status = ? WHERE id_reserva = ?";
 
@@ -259,11 +279,15 @@ public class ReservaDAO {
 
     // método que mapea os horários do banco para o enum Horario
     private static Horario mapearHorario(ResultSet rs) throws SQLException {
-        // lê como java.sql.Time e converte para LocalTime
-        LocalTime inicio = LocalTime.parse(rs.getString("horario_inicio"));
-        LocalTime fim = LocalTime.parse(rs.getString("horario_fim"));
+        String inicioStr = rs.getString("horario_inicio");
+        String fimStr = rs.getString("horario_fim");
 
-        // compara com os valores do Enum Horario
+        System.out.println("DEBUG - horario_inicio: " + inicioStr);
+        System.out.println("DEBUG - horario_fim: " + fimStr);
+
+        LocalTime inicio = LocalTime.parse(inicioStr);
+        LocalTime fim = LocalTime.parse(fimStr);
+
         for (Horario h : Horario.values()) {
             if (h.getInicio().equals(inicio) && h.getFim().equals(fim)) {
                 return h;
