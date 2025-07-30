@@ -28,4 +28,19 @@ public enum Horario {
     public LocalTime getFim() {
         return fim;
     }
+<<<<<<< Updated upstream:src/model/Agenda/Horario.java
+=======
+
+    public static Horario fromInicio(LocalTime inicio) {
+        for (Horario h : Horario.values()) {
+            if (h.getInicio().equals(inicio)) {
+                return h;
+            }
+        }
+        throw new IllegalArgumentException("Horário de início não encontrado: " + inicio);
+    }
+
+
+    
+>>>>>>> Stashed changes:src/model/entities/agenda/Horario.java
 }
