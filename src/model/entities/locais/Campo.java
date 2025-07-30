@@ -7,11 +7,20 @@ public class Campo extends Local{
     private boolean possuiVestiario;
     //metodos construtores
 
+    // construtor para novos objetos
     public Campo(String nome, String descricao, String status, int capacidade, boolean possuiIluminacao, boolean possuiVestiario){
         super(nome, descricao, status, capacidade);
         this.possuiIluminacao = possuiIluminacao;
         this.possuiVestiario = possuiVestiario;
     }
+
+    // construtor 
+    public Campo(int id, String nome, String descricao, String status, int capacidade, boolean possuiIluminacao, boolean possuiVestiario){
+        super(id, nome, descricao, status, capacidade);
+        this.possuiIluminacao = possuiIluminacao;
+        this.possuiVestiario = possuiVestiario;
+    }
+
 
     //getters
 

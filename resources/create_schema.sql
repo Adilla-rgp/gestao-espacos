@@ -76,6 +76,14 @@ CREATE TABLE IF NOT EXISTS sala_reuniao (
     FOREIGN KEY (id_espaco) REFERENCES espaco(id_espaco) ON DELETE CASCADE
 );
 
+-- 4.6 Campo
+CREATE TABLE IF NOT EXISTS campo (
+    id_espaco INTEGER PRIMARY KEY,
+    possui_iluminacao BOOLEAN NOT NULL DEFAULT 0,
+    possui_vestiario BOOLEAN NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_espaco) REFERENCES espaco(id_espaco) ON DELETE CASCADE
+);
+
 -- 5. Tabela de Reservas: Liga usuário com espaço e controla horários
 
 CREATE TABLE IF NOT EXISTS reserva (
