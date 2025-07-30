@@ -52,9 +52,9 @@ public class EspacoDAO {
                     throw new SQLException("Falha ao inserir espaço, nenhuma linha afetada.");
                 }
 
-                try (ResultSet generatedKeys = stmtEspaco.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int idEspaco = generatedKeys.getInt(1);
+                try (ResultSet chavesGeradas = stmtEspaco.getGeneratedKeys()) {
+                    if (chavesGeradas.next()) {
+                        int idEspaco = chavesGeradas.getInt(1);
                         inserirDadosSubclasse(conn, idEspaco, local);
 
                         conn.commit();
@@ -65,9 +65,9 @@ public class EspacoDAO {
                         throw new SQLException("Falha ao obter ID do espaço inserido.");
                     }
                 }
-            } catch (SQLException ex) {
+            } catch (SQLException e) {
                 conn.rollback();
-                throw ex;
+                throw e;
             } finally {
                 conn.setAutoCommit(true);
             }
@@ -161,7 +161,7 @@ public class EspacoDAO {
         return null;
     }
 
-    // Auxiliar: carrega a tabela filha e retorna a subclasse correspondente
+    // Auxiliar: carrega a tabela filha e retorna a subclasse 
     private static Local carregarSubclasse(Connection conn, int idEspaco, String nome, String descricao, String status, int capacidade) throws SQLException {
 
         // Sala
@@ -226,6 +226,17 @@ public class EspacoDAO {
             }
         }
 
+        // Campo
+        try (PreparedStatement stmt = conn.prepareStatement("SELECT * FROM campo WHERE id_espaco = ?")) {
+            stmt.setInt(1, idEspaco);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Campo c = new Campo(idEspaco, nome, descricao, status, capacidade,
+                        rs.getBoolean("possui_iluminacao"),
+                        rs.getBoolean("possui_vestiario"));
+                return c;
+            }
+        }
         return null;
     }
 
@@ -296,6 +307,27 @@ public class EspacoDAO {
         return locais;
     }
 
+    // READ: Busca por locais nome
+    public static Local buscarPorNome(String nome) throws SQLException {
+        String sql = "SELECT * FROM espaco WHERE nome = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nome);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int idEspaco = rs.getInt("id_espaco");
+                String descricao = rs.getString("descricao");
+                String status = rs.getString("status");
+                int capacidade = rs.getInt("capacidade");
+
+                return carregarSubclasse(conn, idEspaco, nome, descricao, status, capacidade);
+            }
+        }
+        return null;
+    }
 
     // UPDATE
     public void atualizarEspaco(Local local, int idEspaco) throws SQLException {
@@ -335,6 +367,7 @@ public class EspacoDAO {
         String sql = null;
         PreparedStatement stmt = null;
 
+        // atualiza sala
         if (local instanceof Sala) {
             Sala s = (Sala) local;
             sql = "UPDATE sala SET quant_projetor = ?, quant_ar_condicionado = ? WHERE id_espaco = ?";
@@ -343,6 +376,7 @@ public class EspacoDAO {
             stmt.setInt(2, s.getQuantArCondicionado());
             stmt.setInt(3, idEspaco);
 
+        // atualiza laboratorio
         } else if (local instanceof Laboratorio) {
             Laboratorio l = (Laboratorio) local;
             sql = "UPDATE laboratorio SET quant_equipamentos = ?, tipo = ? WHERE id_espaco = ?";
@@ -351,6 +385,7 @@ public class EspacoDAO {
             stmt.setString(2, l.getTipoDeLaboratorio().getDescricao());
             stmt.setInt(3, idEspaco);
 
+        // atualiza auditorio
         } else if (local instanceof Auditorio) {
             Auditorio a = (Auditorio) local;
             sql = "UPDATE auditorio SET possui_sistema_som = ?, possui_palco = ? WHERE id_espaco = ?";
@@ -359,6 +394,7 @@ public class EspacoDAO {
             stmt.setBoolean(2, a.getPossuiPalco());
             stmt.setInt(3, idEspaco);
 
+        // atualiza quadra
         } else if (local instanceof Quadra) {
             Quadra q = (Quadra) local;
             sql = "UPDATE quadra SET tipo = ?, eh_coberta = ?, possui_iluminacao = ? WHERE id_espaco = ?";
@@ -368,6 +404,7 @@ public class EspacoDAO {
             stmt.setBoolean(3, q.getPossuiIluminacao());
             stmt.setInt(4, idEspaco);
 
+        // atualiza sala de reunião
         } else if (local instanceof SalaReuniao) {
             SalaReuniao sr = (SalaReuniao) local;
             sql = "UPDATE sala_reuniao SET quant_projetor = ?, possui_videoconferencia = ?, possui_sistema_som = ? WHERE id_espaco = ?";
@@ -377,6 +414,14 @@ public class EspacoDAO {
             stmt.setBoolean(3, sr.getPossuiSistemaDeSom());
             stmt.setInt(4, idEspaco);
 
+        // atualiza campo
+        } else if (local instanceof Campo) {
+            Campo a = (Campo) local;
+            sql = "UPDATE campo SET possui_iluminacao = ?, possui_vestiario = ? WHERE id_espaco = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setBoolean(1, a.getPossuiIluminacao());
+            stmt.setBoolean(2, a.getPossuiVestiario());
+            stmt.setInt(3, idEspaco);
         } else {
             throw new SQLException("Tipo de espaço desconhecido: " + local.getClass().getSimpleName());
         }
@@ -395,26 +440,4 @@ public class EspacoDAO {
             System.out.println("Espaço removido ID: " + idEspaco);
         }
     }
-
-    public static Local buscarPorNome(String nome) throws SQLException {
-        String sql = "SELECT * FROM espaco WHERE nome = ?";
-
-        try (Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, nome);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                int idEspaco = rs.getInt("id_espaco");
-                String descricao = rs.getString("descricao");
-                String status = rs.getString("status");
-                int capacidade = rs.getInt("capacidade");
-
-                return carregarSubclasse(conn, idEspaco, nome, descricao, status, capacidade);
-            }
-        }
-        return null;
-    }
-
 }
